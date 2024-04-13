@@ -1,14 +1,13 @@
 package com.application.parkpilotreg
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
 import com.google.firebase.FirebaseApp
 import kotlin.properties.Delegates
 
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
-//        DynamicColors.applyToActivitiesIfAvailable(this)
-        // To start firebase analytics ( It may be remove reCAPTCHA)
         FirebaseApp.initializeApp(this)
     }
 }

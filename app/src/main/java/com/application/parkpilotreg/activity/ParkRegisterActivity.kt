@@ -31,10 +31,9 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
         val editTextCloseTime: EditText = findViewById(R.id.editTextCloseTime)
         val editTextStationName: EditText = findViewById(R.id.editTextStationName)
         val buttonLocationPick: Button = findViewById(R.id.buttonLocationPick)
-        val editTextLocation: EditText = findViewById(R.id.editTextLocation)
+        val editTextAddress: EditText = findViewById(R.id.editTextAddress)
         val buttonSubmit: Button = findViewById(R.id.buttonSubmit)
 
-        val editTextGettingThere: EditText = findViewById(R.id.editTextGettingThere)
         val editTextStartingPrice: EditText = findViewById(R.id.editTextStartingPrice)
 
         val imageViews = arrayOf(
@@ -57,21 +56,18 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
         var openFlag = false
 
 
-        val viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return ParkRegisterViewModel(mapView, this@ParkRegisterActivity) as T
-            }
-        })[ParkRegisterViewModel::class.java]
+        val viewModel = ViewModelProvider(this)[ParkRegisterViewModel::class.java]
 
 
         viewModel.loadActivity()
+        viewModel.init(this,mapView)
 
         buttonLocationPick.setOnClickListener {
             dialogBox.show()
         }
 
         dialogBox.setOnDismissListener {
-            viewModel.fillAddress(editTextLocation,viewModel.marker.position)
+            viewModel.fillAddress(this,editTextAddress,viewModel.marker.position)
         }
 
         editTextOpenTime.setOnClickListener {
@@ -123,14 +119,14 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
             searchView.hide()
 
             // creating co-routine scope to run search method
-            viewModel.search(searchView.text.toString())
+            viewModel.search(this,searchView.text.toString())
             false
         }
 
         // when current location button press
         buttonCurrentLocation.setOnClickListener {
             // it will set current location in mapView
-            viewModel.getCurrentLocation()
+            viewModel.getCurrentLocation(this)
         }
 
         buttonSubmit.setOnClickListener {
@@ -145,7 +141,6 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
                 StationAdvance_DS(
                     getThinkShouldYouKnow(),
                     getAmenities(),
-                    editTextGettingThere.text.toString(),
                     getAccessTime()
                 )
             )
@@ -183,7 +178,6 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
         }
         viewModel.liveDataStationAdvance.observe(this) {
             it?.let {
-                editTextGettingThere.setText(it.gettingThere)
                 val editTextThinkShouldYouKnow: EditText =
                     findViewById(R.id.editTextThinkShouldYouKnow)
                 editTextThinkShouldYouKnow.setText(loadThinkShouldYouKnow(it.thinkShouldYouKnow))
@@ -194,7 +188,9 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
         }
         viewModel.liveDataStationLocation.observe(this){
             it?.let{
-                viewModel.fillAddress(editTextLocation,GeoPoint(it.latitude,it.longitude))
+                val geoPoint = GeoPoint(it.latitude,it.longitude)
+                viewModel.fillAddress(this,editTextAddress,geoPoint)
+                viewModel.setMarker(geoPoint)
             }
         }
         viewModel.liveDataImages.observe(this) {

@@ -1,6 +1,8 @@
 package com.application.parkpilotreg.module
 
 import android.Manifest
+import android.app.Activity
+import android.content.Context
 import android.content.pm.PackageManager
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -15,34 +17,34 @@ import com.google.android.gms.location.LocationSettingsStatusCodes
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class PermissionRequest<Act : AppCompatActivity>(private val obj: Act) {
+class PermissionRequest {
 
-    private fun hasLocationPermission(): Boolean {
+    private fun hasLocationPermission(context: Context): Boolean {
         val read = ContextCompat.checkSelfPermission(
-            obj,
+            context,
             Manifest.permission.ACCESS_COARSE_LOCATION
         )
         return read == PackageManager.PERMISSION_GRANTED
     }
 
-    fun locationPermissionRequest(): Boolean {
-        if (hasLocationPermission()) return true
+    fun locationPermissionRequest(context: Context): Boolean {
+        if (hasLocationPermission(context)) return true
         ActivityCompat.requestPermissions(
-            obj,
+            context as Activity,
             arrayOf(
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ),
             123
         )
-        return hasLocationPermission()
+        return hasLocationPermission(context)
     }
 
-    fun GPSPermissionRequest() {
+    fun gpsPermissionRequest(context: Context) {
         val interval: Long = 1000 * 60 * 1
         val fastestInterval: Long = 1000 * 50
 
         try {
-            val googleApiClient = GoogleApiClient.Builder(obj).addApi(LocationServices.API).build()
+            val googleApiClient = GoogleApiClient.Builder(context).addApi(LocationServices.API).build()
             googleApiClient.connect()
             val locationRequest: LocationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY).setInterval(interval)
@@ -59,7 +61,7 @@ class PermissionRequest<Act : AppCompatActivity>(private val obj: Act) {
                         locationSettingsRequestBuilder.build()
                     ).await()
                 if (locationSettingsResult.status.statusCode == LocationSettingsStatusCodes.RESOLUTION_REQUIRED) {
-                    locationSettingsResult.status.startResolutionForResult(obj, 0)
+                    locationSettingsResult.status.startResolutionForResult(context as Activity, 0)
                 }
             }
 

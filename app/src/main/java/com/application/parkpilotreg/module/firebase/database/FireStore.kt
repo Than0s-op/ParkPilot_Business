@@ -281,7 +281,6 @@ class StationAdvance : FireStore() {
                 result = StationAdvance(
                     get(thinkShouldYouKnow) as ArrayList<String>,
                     get(amenities) as ArrayList<String>,
-                    get(gettingThere) as String,
                     (get(accessHours) as Map<String, Any>).let {
                         AccessHours(
                             it[openTime] as String,
@@ -303,7 +302,6 @@ class StationAdvance : FireStore() {
         val map = mapOf(
             thinkShouldYouKnow to stationAdvance.thinkShouldYouKnow,
             amenities to stationAdvance.amenities,
-            gettingThere to stationAdvance.gettingThere,
             accessHours to mapOf(
                 openTime to stationAdvance.accessHours.open,
                 closeTime to stationAdvance.accessHours.close,
