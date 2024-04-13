@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.chip.ChipGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/chipGroupDays"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chipEvCharging"
+        style="@style/Widget.Material3.Chip.Filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="EV-Charging" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chipValet"
+        style="@style/Widget.Material3.Chip.Filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Valet" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chipGarage"
+        style="@style/Widget.Material3.Chip.Filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Garage" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chipStaff"
+        style="@style/Widget.Material3.Chip.Filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="On-Site-Staff" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chipWheelchair"
+        style="@style/Widget.Material3.Chip.Filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Wheelchair Accessible" />
+
+</com.google.android.material.chip.ChipGroup>

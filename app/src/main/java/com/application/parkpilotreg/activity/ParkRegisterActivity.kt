@@ -1,21 +1,23 @@
 package com.application.parkpilotreg.activity
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
+import android.view.View
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModel
+import androidx.core.view.get
 import androidx.lifecycle.ViewModelProvider
 import coil.load
 import com.application.parkpilotreg.R
 import com.application.parkpilotreg.StationBasic
 import com.application.parkpilotreg.viewModel.ParkRegisterViewModel
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
 import org.osmdroid.util.GeoPoint
@@ -24,24 +26,32 @@ import com.application.parkpilotreg.AccessHours as DataAccessHours
 import com.application.parkpilotreg.StationAdvance as StationAdvance_DS
 
 class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
+    private lateinit var chipGroupDays: ChipGroup
+    private lateinit var chipGroupAmenities: ChipGroup
+    private lateinit var progressBar: ProgressBar
+    private lateinit var editTextPolicies: EditText
+    private lateinit var editTextOpenTime: EditText
+    private lateinit var editTextCloseTime: EditText
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val editTextOpenTime: EditText = findViewById(R.id.editTextOpenTime)
-        val editTextCloseTime: EditText = findViewById(R.id.editTextCloseTime)
         val editTextStationName: EditText = findViewById(R.id.editTextStationName)
         val buttonLocationPick: Button = findViewById(R.id.buttonLocationPick)
         val editTextAddress: EditText = findViewById(R.id.editTextAddress)
         val buttonSubmit: Button = findViewById(R.id.buttonSubmit)
-
         val editTextStartingPrice: EditText = findViewById(R.id.editTextStartingPrice)
+        editTextOpenTime = findViewById(R.id.editTextOpenTime)
+        editTextCloseTime = findViewById(R.id.editTextCloseTime)
+        editTextPolicies = findViewById(R.id.editTextPolicies)
+        chipGroupDays = findViewById(R.id.chipGroupDays)
+        chipGroupAmenities = findViewById(R.id.chipGroupAmenities)
+        progressBar = findViewById(R.id.progressBar)
 
-        val imageViews = arrayOf(
-            findViewById<ImageView>(R.id.imageView1),
+        val imageViews = arrayOf<ImageView>(
+            findViewById(R.id.imageView1),
             findViewById(R.id.imageView2),
             findViewById(R.id.imageView3)
         )
-
 
         val layoutLocationPicker = layoutInflater.inflate(R.layout.location_picker, null, false)
 
@@ -55,19 +65,18 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
 
         var openFlag = false
 
-
         val viewModel = ViewModelProvider(this)[ParkRegisterViewModel::class.java]
 
-
         viewModel.loadActivity()
-        viewModel.init(this,mapView)
+
+        viewModel.init(this, mapView)
 
         buttonLocationPick.setOnClickListener {
             dialogBox.show()
         }
 
         dialogBox.setOnDismissListener {
-            viewModel.fillAddress(this,editTextAddress,viewModel.marker.position)
+            viewModel.fillAddress(this, editTextAddress, viewModel.marker.position)
         }
 
         editTextOpenTime.setOnClickListener {
@@ -82,7 +91,7 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
         var flagImageView1 = false
         imageViews[0].setOnClickListener {
             if (viewModel.imageViewsUri[0] != null) {
-                imageViews[0].load(R.drawable.add_circle_icon)
+                imageViews[0].load(R.drawable.add_icon)
                 viewModel.imageViewsUri[0] = null
             } else {
                 flagImageView1 = true
@@ -93,7 +102,7 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
         var flagImageView2 = false
         imageViews[1].setOnClickListener {
             if (viewModel.imageViewsUri[1] != null) {
-                imageViews[1].load(R.drawable.add_circle_icon)
+                imageViews[1].load(R.drawable.add_icon)
                 viewModel.imageViewsUri[1] = null
             } else {
                 flagImageView2 = true
@@ -103,7 +112,7 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
 
         imageViews[2].setOnClickListener {
             if (viewModel.imageViewsUri[2] != null) {
-                imageViews[2].load(R.drawable.add_circle_icon)
+                imageViews[2].load(R.drawable.add_icon)
                 viewModel.imageViewsUri[2] = null
             } else {
                 viewModel.imagePicker()
@@ -119,7 +128,7 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
             searchView.hide()
 
             // creating co-routine scope to run search method
-            viewModel.search(this,searchView.text.toString())
+            viewModel.search(this, searchView.text.toString())
             false
         }
 
@@ -130,6 +139,7 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
         }
 
         buttonSubmit.setOnClickListener {
+            showProgress()
             viewModel.uploadDetails(
                 this,
                 StationBasic(
@@ -178,18 +188,17 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
         }
         viewModel.liveDataStationAdvance.observe(this) {
             it?.let {
-                val editTextThinkShouldYouKnow: EditText =
-                    findViewById(R.id.editTextThinkShouldYouKnow)
-                editTextThinkShouldYouKnow.setText(loadThinkShouldYouKnow(it.thinkShouldYouKnow))
+                editTextPolicies.setText(loadPolicies(it.policies))
                 editTextOpenTime.setText(it.accessHours.open)
                 editTextCloseTime.setText(it.accessHours.close)
                 loadDaysSwitch(it.accessHours.selectedDays)
+                loadAmenities(it.amenities)
             }
         }
-        viewModel.liveDataStationLocation.observe(this){
-            it?.let{
-                val geoPoint = GeoPoint(it.latitude,it.longitude)
-                viewModel.fillAddress(this,editTextAddress,geoPoint)
+        viewModel.liveDataStationLocation.observe(this) {
+            it?.let {
+                val geoPoint = GeoPoint(it.latitude, it.longitude)
+                viewModel.fillAddress(this, editTextAddress, geoPoint)
                 viewModel.setMarker(geoPoint)
             }
         }
@@ -200,13 +209,12 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
             }
         }
         viewModel.isUploaded.observe(this) { isUploaded ->
+            unShowProgress()
             if (isUploaded) {
                 Toast.makeText(
                     this, "Information Save Successfully", Toast.LENGTH_SHORT
                 ).show()
-                startActivity(Intent(this, MainActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                })
+                finish()
             } else {
                 Toast.makeText(
                     this, "Failed Save Information", Toast.LENGTH_SHORT
@@ -216,23 +224,29 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
     }
 
     private fun getAmenities(): List<String> {
-        val switchValet: MaterialSwitch = findViewById(R.id.switchValet)
-        val switchEVCharging: MaterialSwitch = findViewById(R.id.switchEVCharging)
         val selectedAmenities: ArrayList<String> = ArrayList()
-
-        if (switchValet.isChecked) selectedAmenities.add("valet")
-        if (switchEVCharging.isChecked) selectedAmenities.add("ev_charging")
-
+        selectedAmenities.apply {
+            for (id in chipGroupAmenities.checkedChipIds) {
+                when (id) {
+                    R.id.chipEvCharging -> add("EV-Charging")
+                    R.id.chipValet -> add("Valet")
+                    R.id.chipGarage -> add("Garage")
+                    R.id.chipStaff -> add("On-Site-Staff")
+                    R.id.chipWheelchair -> add("Wheelchair Accessible")
+                }
+            }
+        }
         return selectedAmenities
     }
 
     private fun loadAmenities(list: List<String>) {
-        val switchValet: MaterialSwitch = findViewById(R.id.switchValet)
-        val switchEVCharging: MaterialSwitch = findViewById(R.id.switchEVCharging)
         for (i in list) {
             when (i) {
-                "valet" -> switchValet.isChecked = true
-                "ev_charging" -> switchEVCharging.isChecked = true
+                "EV-Charging" -> (chipGroupAmenities[0] as Chip).isChecked = true
+                "Valet" -> (chipGroupAmenities[1] as Chip).isChecked = true
+                "Garage" -> (chipGroupAmenities[2] as Chip).isChecked = true
+                "On-Site-Staff" -> (chipGroupAmenities[3] as Chip).isChecked = true
+                "Wheelchair Accessible" -> (chipGroupAmenities[4] as Chip).isChecked = true
             }
         }
     }
@@ -240,24 +254,22 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
     private fun getAccessTime(): DataAccessHours {
         val editTextOpenTime: EditText = findViewById(R.id.editTextOpenTime)
         val editTextCloseTime: EditText = findViewById(R.id.editTextCloseTime)
-        val switchMonday: MaterialSwitch = findViewById(R.id.switchMonday)
-        val switchTuesday: MaterialSwitch = findViewById(R.id.switchTuesday)
-        val switchWednesday: MaterialSwitch = findViewById(R.id.switchWednesday)
-        val switchThursday: MaterialSwitch = findViewById(R.id.switchThursday)
-        val switchFriday: MaterialSwitch = findViewById(R.id.switchFriday)
-        val switchSaturday: MaterialSwitch = findViewById(R.id.switchSaturday)
-        val switchSunday: MaterialSwitch = findViewById(R.id.switchSunday)
+
 
         val selectedDays: ArrayList<String> = ArrayList()
 
         selectedDays.apply {
-            if (switchMonday.isChecked) add("monday")
-            if (switchTuesday.isChecked) add("tuesday")
-            if (switchWednesday.isChecked) add("wednesday")
-            if (switchThursday.isChecked) add("thursday")
-            if (switchFriday.isChecked) add("friday")
-            if (switchSaturday.isChecked) add("saturday")
-            if (switchSunday.isChecked) add("sunday")
+            for (id in chipGroupDays.checkedChipIds) {
+                when (id) {
+                    R.id.chipMonday -> add("monday")
+                    R.id.chipTuesday -> add("tuesday")
+                    R.id.chipWednesday -> add("wednesday")
+                    R.id.chipThursday -> add("thursday")
+                    R.id.chipFriday -> add("friday")
+                    R.id.chipSaturday -> add("saturday")
+                    R.id.chipSunday -> add("sunday")
+                }
+            }
         }
 
         return DataAccessHours(
@@ -268,11 +280,10 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
     }
 
     private fun getThinkShouldYouKnow(): List<String> {
-        val editTextThinkShouldYouKnow: EditText = findViewById(R.id.editTextThinkShouldYouKnow)
-        return editTextThinkShouldYouKnow.text.split("\n")
+        return editTextPolicies.text.split("\n")
     }
 
-    private fun loadThinkShouldYouKnow(list: List<String>): String {
+    private fun loadPolicies(list: List<String>): String {
         var result = ""
         for (i in list) {
             result += "$i\n"
@@ -280,23 +291,35 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
         return result
     }
 
+    private fun showProgress() {
+        // show progress bar
+        progressBar.visibility = View.VISIBLE
+
+        // to disable user interaction with ui
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        )
+    }
+
+    private fun unShowProgress() {
+        // hide progress bar
+        progressBar.visibility = View.GONE
+
+        // to enable user interaction with ui
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+    }
+
     private fun loadDaysSwitch(list: List<String>) {
-        val switchMonday: MaterialSwitch = findViewById(R.id.switchMonday)
-        val switchTuesday: MaterialSwitch = findViewById(R.id.switchTuesday)
-        val switchWednesday: MaterialSwitch = findViewById(R.id.switchWednesday)
-        val switchThursday: MaterialSwitch = findViewById(R.id.switchThursday)
-        val switchFriday: MaterialSwitch = findViewById(R.id.switchFriday)
-        val switchSaturday: MaterialSwitch = findViewById(R.id.switchSaturday)
-        val switchSunday: MaterialSwitch = findViewById(R.id.switchSunday)
         for (i in list) {
             when (i) {
-                "monday" -> switchMonday.isChecked = true
-                "tuesday" -> switchTuesday.isChecked = true
-                "wednesday" -> switchWednesday.isChecked = true
-                "thursday" -> switchThursday.isChecked = true
-                "friday" -> switchFriday.isChecked = true
-                "saturday" -> switchSaturday.isChecked = true
-                "sunday" -> switchSunday.isChecked = true
+                "monday" -> (chipGroupDays[0] as Chip).isChecked = true
+                "tuesday" -> (chipGroupDays[1] as Chip).isChecked = true
+                "wednesday" -> (chipGroupDays[2] as Chip).isChecked = true
+                "thursday" -> (chipGroupDays[3] as Chip).isChecked = true
+                "friday" -> (chipGroupDays[4] as Chip).isChecked = true
+                "saturday" -> (chipGroupDays[5] as Chip).isChecked = true
+                "sunday" -> (chipGroupDays[6] as Chip).isChecked = true
             }
         }
     }

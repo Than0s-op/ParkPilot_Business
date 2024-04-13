@@ -37,6 +37,7 @@
             android:name=".activity.ParkRegisterActivity"
             android:configChanges="orientation"
             android:exported="true"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait">
 
         </activity>
@@ -53,6 +54,7 @@
             android:name=".activity.UserRegisterActivity"
             android:configChanges="orientation"
             android:exported="true"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait">
 
         </activity>

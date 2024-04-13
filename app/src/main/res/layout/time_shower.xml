@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal">
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="?attr/textInputFilledStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="open time"
+        app:startIconDrawable="@drawable/open">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextOpenTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:text="12:00 AM" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="100dp"
+        android:layout_height="1dp"
+        android:layout_gravity="center_vertical" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="?attr/textInputFilledStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="close time"
+        app:startIconDrawable="@drawable/close">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextCloseTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:text="12:00 PM" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+</LinearLayout>

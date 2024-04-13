@@ -300,7 +300,7 @@ class StationAdvance : FireStore() {
 
         // data mapping
         val map = mapOf(
-            thinkShouldYouKnow to stationAdvance.thinkShouldYouKnow,
+            thinkShouldYouKnow to stationAdvance.policies,
             amenities to stationAdvance.amenities,
             accessHours to mapOf(
                 openTime to stationAdvance.accessHours.open,

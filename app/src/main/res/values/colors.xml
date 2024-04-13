@@ -4,6 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="materialCardViewColor">#99FFFFFF</color>
     <color name="textViewColor">#3C3C3C</color>
+    <color name="progressBarColor">#99FFFFFF</color>
     <color name="seed">#FDD537</color>
     <color name="md_theme_light_primary">#715C00</color>
     <color name="md_theme_light_onPrimary">#FFFFFF</color>
