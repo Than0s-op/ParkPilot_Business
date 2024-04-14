@@ -149,7 +149,7 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
                 ),
 
                 StationAdvance_DS(
-                    getThinkShouldYouKnow(),
+                    editTextPolicies.text.toString(),
                     getAmenities(),
                     getAccessTime()
                 )
@@ -188,7 +188,7 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
         }
         viewModel.liveDataStationAdvance.observe(this) {
             it?.let {
-                editTextPolicies.setText(loadPolicies(it.policies))
+                editTextPolicies.setText(it.policies)
                 editTextOpenTime.setText(it.accessHours.open)
                 editTextCloseTime.setText(it.accessHours.close)
                 loadDaysSwitch(it.accessHours.selectedDays)
@@ -277,18 +277,6 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
             editTextCloseTime.text.toString(),
             selectedDays
         )
-    }
-
-    private fun getThinkShouldYouKnow(): List<String> {
-        return editTextPolicies.text.split("\n")
-    }
-
-    private fun loadPolicies(list: List<String>): String {
-        var result = ""
-        for (i in list) {
-            result += "$i\n"
-        }
-        return result
     }
 
     private fun showProgress() {

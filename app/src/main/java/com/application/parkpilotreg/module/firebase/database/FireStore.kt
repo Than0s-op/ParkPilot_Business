@@ -266,10 +266,9 @@ class StationBasic : FireStore() {
 @Suppress("UNCHECKED_CAST")
 class StationAdvance : FireStore() {
     private val collectionName = "stationAdvance"
-    private val thinkShouldYouKnow = "ThinkShouldYouKnow"
+    private val policies = "policies"
     private val amenities = "amenities"
     private val accessHours = "accessHours"
-    private val gettingThere = "gettingThere"
     private val openTime = "openTime"
     private val closeTime = "closeTime"
     private val available = "available"
@@ -279,7 +278,7 @@ class StationAdvance : FireStore() {
         fireStore.collection(collectionName).document(documentID).get().await().apply {
             if(get(amenities) != null) {
                 result = StationAdvance(
-                    get(thinkShouldYouKnow) as ArrayList<String>,
+                    get(policies) as String,
                     get(amenities) as ArrayList<String>,
                     (get(accessHours) as Map<String, Any>).let {
                         AccessHours(
@@ -300,7 +299,7 @@ class StationAdvance : FireStore() {
 
         // data mapping
         val map = mapOf(
-            thinkShouldYouKnow to stationAdvance.policies,
+            policies to stationAdvance.policies,
             amenities to stationAdvance.amenities,
             accessHours to mapOf(
                 openTime to stationAdvance.accessHours.open,

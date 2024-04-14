@@ -26,7 +26,7 @@ data class StationLocation(val stationUid: String?, val coordinates: FirebaseGeo
 data class StationBasic(val name: String?, val price: Int?, val rating: Float?)
 
 data class StationAdvance(
-    val policies: List<String>,
+    val policies: String,
     val amenities: List<String>,
     val accessHours: AccessHours,
 )
