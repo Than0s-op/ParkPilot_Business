@@ -228,11 +228,11 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
         selectedAmenities.apply {
             for (id in chipGroupAmenities.checkedChipIds) {
                 when (id) {
-                    R.id.chipEvCharging -> add("EV-Charging")
-                    R.id.chipValet -> add("Valet")
-                    R.id.chipGarage -> add("Garage")
-                    R.id.chipStaff -> add("On-Site-Staff")
-                    R.id.chipWheelchair -> add("Wheelchair Accessible")
+                    R.id.chipEvCharging -> add(getString(R.string.ev_charging))
+                    R.id.chipValet -> add(getString(R.string.valet))
+                    R.id.chipGarage -> add(getString(R.string.garage))
+                    R.id.chipStaff -> add(getString(R.string.on_site_staff))
+                    R.id.chipWheelchair -> add(getString(R.string.wheelchair_accessible))
                 }
             }
         }
@@ -242,11 +242,11 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
     private fun loadAmenities(list: List<String>) {
         for (i in list) {
             when (i) {
-                "EV-Charging" -> (chipGroupAmenities[0] as Chip).isChecked = true
-                "Valet" -> (chipGroupAmenities[1] as Chip).isChecked = true
-                "Garage" -> (chipGroupAmenities[2] as Chip).isChecked = true
-                "On-Site-Staff" -> (chipGroupAmenities[3] as Chip).isChecked = true
-                "Wheelchair Accessible" -> (chipGroupAmenities[4] as Chip).isChecked = true
+                getString(R.string.ev_charging) -> (chipGroupAmenities[0] as Chip).isChecked = true
+                getString(R.string.valet) -> (chipGroupAmenities[1] as Chip).isChecked = true
+                getString(R.string.garage) -> (chipGroupAmenities[2] as Chip).isChecked = true
+                getString(R.string.on_site_staff) -> (chipGroupAmenities[3] as Chip).isChecked = true
+                getString(R.string.wheelchair_accessible) -> (chipGroupAmenities[4] as Chip).isChecked = true
             }
         }
     }
@@ -261,13 +261,13 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
         selectedDays.apply {
             for (id in chipGroupDays.checkedChipIds) {
                 when (id) {
-                    R.id.chipMonday -> add("monday")
-                    R.id.chipTuesday -> add("tuesday")
-                    R.id.chipWednesday -> add("wednesday")
-                    R.id.chipThursday -> add("thursday")
-                    R.id.chipFriday -> add("friday")
-                    R.id.chipSaturday -> add("saturday")
-                    R.id.chipSunday -> add("sunday")
+                    R.id.chipMonday -> getString(R.string.monday)
+                    R.id.chipTuesday -> getString(R.string.tuesday)
+                    R.id.chipWednesday -> getString(R.string.wednesday)
+                    R.id.chipThursday -> getString(R.string.thursday)
+                    R.id.chipFriday -> getString(R.string.friday)
+                    R.id.chipSaturday -> getString(R.string.saturday)
+                    R.id.chipSunday -> getString(R.string.sunday)
                 }
             }
         }
@@ -301,13 +301,13 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
     private fun loadDaysSwitch(list: List<String>) {
         for (i in list) {
             when (i) {
-                "monday" -> (chipGroupDays[0] as Chip).isChecked = true
-                "tuesday" -> (chipGroupDays[1] as Chip).isChecked = true
-                "wednesday" -> (chipGroupDays[2] as Chip).isChecked = true
-                "thursday" -> (chipGroupDays[3] as Chip).isChecked = true
-                "friday" -> (chipGroupDays[4] as Chip).isChecked = true
-                "saturday" -> (chipGroupDays[5] as Chip).isChecked = true
-                "sunday" -> (chipGroupDays[6] as Chip).isChecked = true
+                getString(R.string.monday) -> (chipGroupDays[0] as Chip).isChecked = true
+                getString(R.string.tuesday) -> (chipGroupDays[1] as Chip).isChecked = true
+                getString(R.string.wednesday) -> (chipGroupDays[2] as Chip).isChecked = true
+                getString(R.string.thursday) -> (chipGroupDays[3] as Chip).isChecked = true
+                getString(R.string.friday) -> (chipGroupDays[4] as Chip).isChecked = true
+                getString(R.string.saturday) -> (chipGroupDays[5] as Chip).isChecked = true
+                getString(R.string.sunday) -> (chipGroupDays[6] as Chip).isChecked = true
             }
         }
     }

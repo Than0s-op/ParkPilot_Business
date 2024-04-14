@@ -1,0 +1,7 @@
+<resources>
+    <string name="ev_charging">EV-Charging</string>
+    <string name="valet">Valet</string>
+    <string name="garage">Garage</string>
+    <string name="on_site_staff">On-Site-Staff</string>
+    <string name="wheelchair_accessible">Wheelchair Accessible</string>
+</resources>
