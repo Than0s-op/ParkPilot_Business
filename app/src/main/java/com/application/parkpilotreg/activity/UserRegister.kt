@@ -2,9 +2,12 @@ package com.application.parkpilotreg.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +20,7 @@ import com.application.parkpilotreg.UserProfile
 import com.application.parkpilotreg.viewModel.UserRegisterViewModel
 
 class UserRegister : AppCompatActivity(R.layout.user_register) {
+    private lateinit var progressBar: ProgressBar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -29,6 +33,7 @@ class UserRegister : AppCompatActivity(R.layout.user_register) {
         val editTextAge: EditText = findViewById(R.id.editTextAge)
         val radioGroupGender: RadioGroup = findViewById(R.id.radioGroupGender)
         val buttonSave: Button = findViewById(R.id.buttonSave)
+        progressBar = findViewById(R.id.progressBar)
 
         // getting userRegister view model reference
         val viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
@@ -57,19 +62,27 @@ class UserRegister : AppCompatActivity(R.layout.user_register) {
         }
 
         buttonSave.setOnClickListener {
-            // uploading the user data
-            viewModel.saveUserData(
-                this,
-                UserCollection(
-                    editTextFirstName.text.toString(),
-                    editTextLastName.text.toString(),
-                    editTextBirthDate.text.toString(),
-                    if (radioGroupGender.checkedRadioButtonId == R.id.radioButtonFemale) "female" else "male"
-                ),
-                UserProfile(
-                    editTextUserName.text.toString()
+            var isValid = true
+            isValid = isValid(editTextUserName) and isValid
+            isValid = isValid(editTextFirstName) and isValid
+            isValid = isValid(editTextLastName) and isValid
+
+            if (isValid) {
+                // uploading the user data
+                showProgress()
+                viewModel.saveUserData(
+                    this,
+                    UserCollection(
+                        editTextFirstName.text.toString(),
+                        editTextLastName.text.toString(),
+                        editTextBirthDate.text.toString(),
+                        if (radioGroupGender.checkedRadioButtonId == R.id.radioButtonFemale) "female" else "male"
+                    ),
+                    UserProfile(
+                        editTextUserName.text.toString()
+                    )
                 )
-            )
+            }
         }
 
         // it is a observer of getImage method's result
@@ -124,9 +137,10 @@ class UserRegister : AppCompatActivity(R.layout.user_register) {
 
         // it will execute when user data uploaded successfully or failed to upload
         viewModel.isUploaded.observe(this) { isUploaded ->
+            unShowProgress()
             if (isUploaded) {
                 Toast.makeText(
-                    this, "Information Save Successfully", Toast.LENGTH_SHORT
+                    this, "Detail save successfully", Toast.LENGTH_SHORT
                 ).show()
 
                 nextIntent?.let {
@@ -135,9 +149,38 @@ class UserRegister : AppCompatActivity(R.layout.user_register) {
                 finish()
             } else {
                 Toast.makeText(
-                    this, "Failed Save Information", Toast.LENGTH_SHORT
+                    this, "Failed save detail", Toast.LENGTH_SHORT
                 ).show()
             }
         }
+    }
+
+    private fun isValid(editText: EditText): Boolean {
+        return if (editText.text.isBlank()) {
+            editText.error = "Must not be blank"
+            false
+        } else {
+            editText.error = null
+            true
+        }
+    }
+
+    private fun showProgress() {
+        // show progress bar
+        progressBar.visibility = View.VISIBLE
+
+        // to disable user interaction with ui
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        )
+    }
+
+    private fun unShowProgress() {
+        // hide progress bar
+        progressBar.visibility = View.GONE
+
+        // to enable user interaction with ui
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 }
