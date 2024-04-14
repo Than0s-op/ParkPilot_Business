@@ -261,13 +261,13 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
         selectedDays.apply {
             for (id in chipGroupDays.checkedChipIds) {
                 when (id) {
-                    R.id.chipMonday -> getString(R.string.monday)
-                    R.id.chipTuesday -> getString(R.string.tuesday)
-                    R.id.chipWednesday -> getString(R.string.wednesday)
-                    R.id.chipThursday -> getString(R.string.thursday)
-                    R.id.chipFriday -> getString(R.string.friday)
-                    R.id.chipSaturday -> getString(R.string.saturday)
-                    R.id.chipSunday -> getString(R.string.sunday)
+                    R.id.chipMonday -> add(getString(R.string.monday))
+                    R.id.chipTuesday -> add(getString(R.string.tuesday))
+                    R.id.chipWednesday -> add(getString(R.string.wednesday))
+                    R.id.chipThursday -> add(getString(R.string.thursday))
+                    R.id.chipFriday -> add(getString(R.string.friday))
+                    R.id.chipSaturday -> add(getString(R.string.saturday))
+                    R.id.chipSunday -> add(getString(R.string.sunday))
                 }
             }
         }
