@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progressBar"
@@ -44,7 +44,8 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/white"
                 android:clipToPadding="false"
-                app:cardElevation="10dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="5dp"
                 app:contentPadding="20dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -66,6 +67,7 @@
                         android:id="@+id/textInputLayoutStationName"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
                         android:layout_marginEnd="10dp"
                         app:layout_constraintEnd_toStartOf="@+id/textInputLayoutStartingPrice"
                         app:layout_constraintHorizontal_bias="0.5"
@@ -87,6 +89,7 @@
                         android:id="@+id/textInputLayoutStartingPrice"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintHorizontal_weight="3"
@@ -146,7 +149,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/white"
                 android:clipToPadding="false"
-                app:cardElevation="10dp"
+                app:cardElevation="5dp"
                 app:contentPadding="20dp">
 
                 <LinearLayout
@@ -182,7 +185,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/white"
                 android:clipToPadding="false"
-                app:cardElevation="10dp"
+                app:cardElevation="5dp"
                 app:contentPadding="20dp">
 
                 <LinearLayout
@@ -213,7 +216,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/white"
                 android:clipToPadding="false"
-                app:cardElevation="10dp"
+                app:cardElevation="5dp"
                 app:contentPadding="20dp">
 
                 <LinearLayout

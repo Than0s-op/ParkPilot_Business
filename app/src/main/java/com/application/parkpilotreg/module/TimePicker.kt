@@ -27,14 +27,13 @@ class TimePicker(message: String, timeFormat: Int) {
         timePicker.show(manager, tag)
     }
 
-    fun format24(time: Time): String {
-        return "${time.hours} : ${time.minute}"
-    }
-
     fun format12(time: Time): String {
-        val zero = if(time.hours < 10 || (time.hours in 13..21)) "0" else ""
-        if (time.hours > 12) return "$zero${time.hours - 12}:${time.minute} PM"
-        return "$zero${time.hours}:${time.minute} AM"
+        val zeroHours = if (time.hours < 10 || (time.hours in 13..21)) "0" else ""
+        val zeroMinute = if (time.minute < 10) "0" else ""
+        if(time.hours == 12) return "12:$zeroMinute${time.minute} PM"
+        else if (time.hours == 0) return "12:$zeroMinute${time.minute} AM"
+        else if (time.hours > 12) return "$zeroHours${time.hours - 12}:$zeroMinute${time.minute} PM"
+        return "$zeroHours${time.hours}:$zeroMinute${time.minute} AM"
     }
 
     companion object {

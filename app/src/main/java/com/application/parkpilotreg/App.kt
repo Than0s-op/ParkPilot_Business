@@ -1,6 +1,7 @@
 package com.application.parkpilotreg
 
 import android.app.Application
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.firebase.FirebaseApp
 import kotlin.properties.Delegates
