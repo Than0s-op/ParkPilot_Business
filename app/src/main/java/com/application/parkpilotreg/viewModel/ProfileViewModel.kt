@@ -12,7 +12,7 @@ import com.application.parkpilotreg.User
 import com.application.parkpilotreg.activity.AuthenticationActivity
 import com.application.parkpilotreg.activity.MainActivity
 import com.application.parkpilotreg.activity.ParkRegisterActivity
-import com.application.parkpilotreg.activity.UserRegisterActivity
+import com.application.parkpilotreg.activity.UserRegister
 import com.application.parkpilotreg.module.PhotoLoader
 import com.application.parkpilotreg.module.firebase.Storage
 import com.application.parkpilotreg.module.firebase.database.UserBasic
@@ -41,7 +41,7 @@ class ProfileViewModel : ViewModel() {
     }
 
     fun personalInformation(context: Context) {
-        context.startActivity(Intent(context, UserRegisterActivity::class.java))
+        context.startActivity(Intent(context, UserRegister::class.java))
     }
 
     fun spotDetail(context: Context) {

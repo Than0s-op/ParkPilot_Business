@@ -15,7 +15,7 @@ import com.application.parkpilotreg.User
 import com.application.parkpilotreg.UserCollection
 import com.application.parkpilotreg.UserProfile
 import com.application.parkpilotreg.activity.MainActivity
-import com.application.parkpilotreg.activity.UserRegisterActivity
+import com.application.parkpilotreg.activity.UserRegister
 import com.application.parkpilotreg.module.DatePicker
 import com.application.parkpilotreg.module.PhotoPicker
 import com.application.parkpilotreg.module.firebase.Storage
@@ -23,14 +23,11 @@ import com.application.parkpilotreg.module.firebase.database.UserAdvance
 import com.application.parkpilotreg.module.firebase.database.UserBasic
 import com.avatarfirst.avatargenlib.AvatarGenerator
 import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
-import com.google.firebase.auth.userProfileChangeRequest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 import java.time.LocalDate
 
-class UserRegisterViewModel(activity: UserRegisterActivity) : ViewModel() {
+class UserRegisterViewModel(activity: UserRegister) : ViewModel() {
 
     // it will store user profile image's Uri
     var photoUrl: Uri? = null

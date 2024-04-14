@@ -140,21 +140,28 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
         }
 
         buttonSubmit.setOnClickListener {
-            showProgress()
-            viewModel.uploadDetails(
-                this,
-                StationBasic(
-                    editTextStationName.text.toString(),
-                    editTextStartingPrice.text.toString().toInt(),
-                    null
-                ),
+            var isValid = true
+            isValid = isValid(editTextStationName) and isValid
+            isValid = isValid(editTextStartingPrice) and isValid
+            isValid = isValid(editTextPolicies) and isValid
 
-                StationAdvance_DS(
-                    editTextPolicies.text.toString(),
-                    getAmenities(),
-                    getAccessTime()
+            if (isValid) {
+                showProgress()
+                viewModel.uploadDetails(
+                    this,
+                    StationBasic(
+                        editTextStationName.text.toString(),
+                        editTextStartingPrice.text.toString().toInt(),
+                        null
+                    ),
+
+                    StationAdvance_DS(
+                        editTextPolicies.text.toString(),
+                        getAmenities(),
+                        getAccessTime()
+                    )
                 )
-            )
+            }
         }
 
         viewModel.timePicker.liveDataTimePicker.observe(this) {
@@ -246,8 +253,11 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
                 getString(R.string.ev_charging) -> (chipGroupAmenities[0] as Chip).isChecked = true
                 getString(R.string.valet) -> (chipGroupAmenities[1] as Chip).isChecked = true
                 getString(R.string.garage) -> (chipGroupAmenities[2] as Chip).isChecked = true
-                getString(R.string.on_site_staff) -> (chipGroupAmenities[3] as Chip).isChecked = true
-                getString(R.string.wheelchair_accessible) -> (chipGroupAmenities[4] as Chip).isChecked = true
+                getString(R.string.on_site_staff) -> (chipGroupAmenities[3] as Chip).isChecked =
+                    true
+
+                getString(R.string.wheelchair_accessible) -> (chipGroupAmenities[4] as Chip).isChecked =
+                    true
             }
         }
     }
@@ -297,6 +307,14 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
 
         // to enable user interaction with ui
         window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+    }
+
+    private fun isValid(editText: EditText): Boolean {
+        if (editText.text.isBlank()) {
+            editText.error = "Must not blank"
+            return false
+        }
+        return true
     }
 
     private fun loadDaysSwitch(list: List<String>) {

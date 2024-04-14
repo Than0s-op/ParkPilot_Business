@@ -15,9 +15,8 @@ import com.application.parkpilotreg.R
 import com.application.parkpilotreg.UserCollection
 import com.application.parkpilotreg.UserProfile
 import com.application.parkpilotreg.viewModel.UserRegisterViewModel
-import com.google.firebase.auth.FirebaseUser
 
-class UserRegisterActivity : AppCompatActivity(R.layout.user_register) {
+class UserRegister : AppCompatActivity(R.layout.user_register) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -30,15 +29,11 @@ class UserRegisterActivity : AppCompatActivity(R.layout.user_register) {
         val editTextAge: EditText = findViewById(R.id.editTextAge)
         val radioGroupGender: RadioGroup = findViewById(R.id.radioGroupGender)
         val buttonSave: Button = findViewById(R.id.buttonSave)
-        val editTextPhoneNumber: EditText = findViewById(R.id.editTextPhoneNumber)
-        val editTextEmail: EditText = findViewById(R.id.editTextEmail)
-        val buttonVerifyPhoneNumber: Button = findViewById(R.id.buttonVerifyPhoneNumber)
-        val buttonVerifyEmail: Button = findViewById(R.id.buttonVerifyEmail)
 
         // getting userRegister view model reference
         val viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return UserRegisterViewModel(this@UserRegisterActivity) as T
+                return UserRegisterViewModel(this@UserRegister) as T
             }
         })[UserRegisterViewModel::class.java]
 
