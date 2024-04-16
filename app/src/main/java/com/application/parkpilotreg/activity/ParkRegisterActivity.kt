@@ -122,8 +122,6 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
 
         // when user will type in search bar and press search(action) button (present on keyboard)
         searchView.editText.setOnEditorActionListener { _, _, _ ->
-            // setting the typed text to the search bar
-            searchBar.setText(searchView.text)
 
             // hide the searchView(search suggestion box)
             searchView.hide()

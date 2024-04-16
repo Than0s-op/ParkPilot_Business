@@ -3,7 +3,6 @@ package com.application.parkpilotreg.module
 import android.content.Context
 import android.location.Address
 import android.location.Geocoder
-import android.location.Location
 import android.view.MotionEvent
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
@@ -119,14 +118,14 @@ class OSM(private val mapView: MapView) {
             // request to turn on location(GPS)
             activity.gpsPermissionRequest(context)
 
-            // below code will give last know location of user. But It will "null" if user's GPS is turned off
-            LocationServices.getFusedLocationProviderClient(context).lastLocation
-                .addOnSuccessListener { location: Location? ->
-                    // Got last known location. In some rare situations this can be null.
-                    if (location != null) {
-                        currentLocation = GeoPoint(location.latitude, location.longitude)
-                    }
-                }.await()
+            try {
+                // below code will give last know location of user. But It will "null" if user's GPS is turned off
+                LocationServices.getFusedLocationProviderClient(context).lastLocation.await().let {
+                    currentLocation = GeoPoint(it.latitude, it.longitude)
+                }
+            } catch (_: Exception) {
+            }
+
         }
         return currentLocation
     }
