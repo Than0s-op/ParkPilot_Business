@@ -26,7 +26,7 @@
         </activity>
 
         <activity
-            android:name=".activity.AuthenticationActivity"
+            android:name=".activity.Authentication"
             android:configChanges="orientation"
             android:exported="true"
             android:screenOrientation="portrait">
@@ -43,7 +43,7 @@
         </activity>
 
         <activity
-            android:name=".activity.ProfileActivity"
+            android:name=".activity.Setting"
             android:configChanges="orientation"
             android:exported="true"
             android:screenOrientation="portrait">

@@ -20,7 +20,7 @@ class MainActivity : Activity() {
             appUser.UID = Firebase.auth.currentUser?.uid!!
 
             // start the registration activity
-            startActivity(Intent(this@MainActivity, ProfileActivity::class.java).apply {
+            startActivity(Intent(this@MainActivity, Setting::class.java).apply {
                 // clear the activity stack
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             })
@@ -28,7 +28,7 @@ class MainActivity : Activity() {
 
         // No user is signed in yet
         else {
-            startActivity(Intent(this, AuthenticationActivity::class.java).apply {
+            startActivity(Intent(this, Authentication::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             })
         }

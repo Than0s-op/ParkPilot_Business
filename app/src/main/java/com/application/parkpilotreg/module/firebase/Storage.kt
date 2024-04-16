@@ -17,7 +17,7 @@ class Storage {
         val childRef = storageRef.child("user_profile_photo/${uid}")
         val request = ImageRequest.Builder(context)
             .data(photo)
-            .size(300, 300)
+            .size(600, 600)
             .build()
         val drawable = context.imageLoader.execute(request).drawable
 
@@ -52,7 +52,7 @@ class Storage {
 
             val request = ImageRequest.Builder(context)
                 .data(uri)
-                .size(300, 300)
+                .size(600, 600)
                 .build()
             val drawable = context.imageLoader.execute(request).drawable
 

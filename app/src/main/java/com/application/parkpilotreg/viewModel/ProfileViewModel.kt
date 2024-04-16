@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.application.parkpilotreg.R
 import com.application.parkpilotreg.User
-import com.application.parkpilotreg.activity.AuthenticationActivity
+import com.application.parkpilotreg.activity.Authentication
 import com.application.parkpilotreg.activity.MainActivity
 import com.application.parkpilotreg.activity.ParkRegisterActivity
 import com.application.parkpilotreg.activity.UserRegister
@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 
 class ProfileViewModel : ViewModel() {
     fun login(context: Context) {
-        context.startActivity(Intent(context, AuthenticationActivity::class.java))
+        context.startActivity(Intent(context, Authentication::class.java))
     }
 
     fun logout(context: Context) {
@@ -54,7 +54,8 @@ class ProfileViewModel : ViewModel() {
                 profileImage.setImageDrawable(
                     PhotoLoader().getImage(
                         context,
-                        Storage().userProfilePhotoGet(User.UID) ?: R.drawable.person_icon
+                        Storage().userProfilePhotoGet(User.UID) ?: R.drawable.person_icon,
+                        false
                     ).drawable
                 )
                 profileName.text = UserBasic().getProfile(User.UID)?.userName ?: "User"

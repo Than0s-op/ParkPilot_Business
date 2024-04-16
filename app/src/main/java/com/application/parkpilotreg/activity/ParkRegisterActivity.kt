@@ -145,6 +145,13 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
             isValid = isValid(editTextStartingPrice) and isValid
             isValid = isValid(editTextPolicies) and isValid
 
+            for (i in 0..<3) {
+                if (viewModel.imageViewsUri[i] == null) {
+                    Toast.makeText(this, "All images must selected", Toast.LENGTH_LONG).show()
+                    return@setOnClickListener
+                }
+            }
+
             if (isValid) {
                 showProgress()
                 viewModel.uploadDetails(
@@ -161,6 +168,8 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
                         getAccessTime()
                     )
                 )
+            } else {
+                Toast.makeText(this, "Fill the required information", Toast.LENGTH_LONG).show()
             }
         }
 

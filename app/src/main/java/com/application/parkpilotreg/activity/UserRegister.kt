@@ -66,6 +66,7 @@ class UserRegister : AppCompatActivity(R.layout.user_register) {
             isValid = isValid(editTextUserName) and isValid
             isValid = isValid(editTextFirstName) and isValid
             isValid = isValid(editTextLastName) and isValid
+            isValid = isValid(editTextBirthDate) and isValid
 
             if (isValid) {
                 // uploading the user data

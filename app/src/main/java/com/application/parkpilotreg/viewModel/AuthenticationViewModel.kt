@@ -8,15 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.application.parkpilotreg.EventHandler
-import com.application.parkpilotreg.activity.AuthenticationActivity
+import com.application.parkpilotreg.activity.Authentication
 import com.application.parkpilotreg.activity.MainActivity
 import com.application.parkpilotreg.module.firebase.authentication.GoogleSignIn
 import com.application.parkpilotreg.module.firebase.authentication.PhoneAuth
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
-class AuthenticationViewModel(activity: AuthenticationActivity) : ViewModel() {
+class AuthenticationViewModel(activity: Authentication) : ViewModel() {
 
 //      .......... [ phone auth ] ................
 
@@ -28,10 +26,10 @@ class AuthenticationViewModel(activity: AuthenticationActivity) : ViewModel() {
     val verificationCode = phoneAuth.verificationId
 
     // it will store result of code check
-    val verifyPhoneNumberWithCodeResult = MutableLiveData<EventHandler<Boolean>>()
+    val verifyPhoneNumberWithCodeResult = MutableLiveData<Boolean>()
 
     // it will store result of google signIn
-    val googleSignInResult = MutableLiveData<EventHandler<Boolean>>()
+    val googleSignInResult = MutableLiveData<Boolean>()
 
     // it will store state of login scroll view visibility [ To handel reconfiguration]
     var scrollViewLoginVisibility = View.VISIBLE
@@ -51,7 +49,7 @@ class AuthenticationViewModel(activity: AuthenticationActivity) : ViewModel() {
         viewModelScope.launch {
             // store result of verification code. It will be true (if code match) or false
             verifyPhoneNumberWithCodeResult.value =
-                EventHandler(phoneAuth.verifyPhoneNumberWithCode(OTP))
+                phoneAuth.verifyPhoneNumberWithCode(OTP)
         }
     }
 
@@ -68,7 +66,7 @@ class AuthenticationViewModel(activity: AuthenticationActivity) : ViewModel() {
     private val resultLauncher =
         activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             // store true or false
-            googleSignInResult.value = EventHandler(result.resultCode == AppCompatActivity.RESULT_OK)
+            googleSignInResult.value = result.resultCode == AppCompatActivity.RESULT_OK
         }
 
 

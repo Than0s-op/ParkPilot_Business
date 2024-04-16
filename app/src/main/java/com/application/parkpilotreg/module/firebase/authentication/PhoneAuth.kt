@@ -3,11 +3,9 @@ package com.application.parkpilotreg.module.firebase.authentication
 import android.app.Activity
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.application.parkpilotreg.EventHandler
 import com.google.firebase.Firebase
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthMissingActivityForRecaptchaException
@@ -26,7 +24,7 @@ class PhoneAuth(private val activity: Activity) {
     private var auth: FirebaseAuth = Firebase.auth
 
     // live data to observe verificationID (OTP)
-    val verificationId = MutableLiveData<EventHandler<String>>()
+    val verificationId = MutableLiveData<String>()
 
 
     // It is useful to resend OTP
@@ -61,7 +59,7 @@ class PhoneAuth(private val activity: Activity) {
                 }
 
                 // setting empty to do some task (because it is a observer)
-                this@PhoneAuth.verificationId.value = EventHandler("")
+                this@PhoneAuth.verificationId.value = ""
             }
 
             override fun onCodeSent(
@@ -73,7 +71,7 @@ class PhoneAuth(private val activity: Activity) {
                 Log.d("PhoneAuthActivity", "onCodeSent:$verificationId")
 
                 // assigning some value to do some task (because it is a observer)
-                this@PhoneAuth.verificationId.value = EventHandler(verificationId)
+                this@PhoneAuth.verificationId.value = verificationId
 
                 // storing resendToken. It will need to resend OTP
                 resendToken = token
@@ -100,7 +98,7 @@ class PhoneAuth(private val activity: Activity) {
 
     suspend fun verifyPhoneNumberWithCode(OTP: String): Boolean {
         // requesting for credential by using correct OTP and user entered OTP
-        val credential = PhoneAuthProvider.getCredential(verificationId.value?.peekContent()!!, OTP)
+        val credential = PhoneAuthProvider.getCredential(verificationId.value!!, OTP)
 
         // checking is got credential valid or not
         // if, it is Invalid user, it means user entered OTP is wrong
