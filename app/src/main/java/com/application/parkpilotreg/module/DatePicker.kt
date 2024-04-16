@@ -1,5 +1,6 @@
 package com.application.parkpilotreg.module
 
+import android.content.Context
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import android.icu.util.TimeZone
@@ -10,11 +11,16 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import java.time.LocalDate
 import java.util.Locale
 
-class DatePicker(private val activity: AppCompatActivity) {
+class DatePicker(startDate: Long, endDate: Long) {
+
+    private val constraintsBuilder = CalendarConstraints.Builder()
+        .setStart(startDate)
+        .setEnd(endDate)
+        .build()
 
     // just init date picker (not build)
     private var datePicker: MaterialDatePicker.Builder<Long> =
-        MaterialDatePicker.Builder.datePicker()
+        MaterialDatePicker.Builder.datePicker().setCalendarConstraints(constraintsBuilder)
 
     // to observe date, hence other classes can access date, when it will change
     var pickedDate = MutableLiveData<String?>()
@@ -32,24 +38,13 @@ class DatePicker(private val activity: AppCompatActivity) {
         return calendar.timeInMillis
     }
 
-    fun showDatePicker(message: String, start: String?, end: String?) {
-
-        // if start and end have "date" (both required) then, set calendar constraints
-        if (start != null && end != null) {
-            // building calendar constraint
-            val constraintsBuilder = CalendarConstraints.Builder()
-                .setStart(dateToMillis(start))
-                .setEnd(dateToMillis(end))
-            // setting up calendar constraints to date picker
-            datePicker.setCalendarConstraints(constraintsBuilder.build())
-        }
+    fun showDatePicker(context: Context, message: String) {
 
         // set message to the date picker, then build it
-        val builtDatePicker = datePicker.setTitleText(message)
-            .build()
+        val builtDatePicker = datePicker.setTitleText(message).build()
 
         // show the date picker
-        builtDatePicker.show(activity.supportFragmentManager, null)
+        builtDatePicker.show((context as AppCompatActivity).supportFragmentManager, null)
 
         // when date picker will gone
         builtDatePicker.addOnPositiveButtonClickListener {

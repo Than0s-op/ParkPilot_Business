@@ -22,8 +22,9 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.divider.MaterialDivider
-        android:layout_width="100dp"
-        android:layout_height="1dp"
+        android:layout_width="0dp"
+        android:layout_weight="0.5"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_vertical" />
 
     <com.google.android.material.textfield.TextInputLayout

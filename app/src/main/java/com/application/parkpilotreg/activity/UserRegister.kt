@@ -17,6 +17,7 @@ import coil.load
 import com.application.parkpilotreg.R
 import com.application.parkpilotreg.UserCollection
 import com.application.parkpilotreg.UserProfile
+import com.application.parkpilotreg.module.PhotoPicker
 import com.application.parkpilotreg.viewModel.UserRegisterViewModel
 
 class UserRegister : AppCompatActivity(R.layout.user_register) {
@@ -34,17 +35,10 @@ class UserRegister : AppCompatActivity(R.layout.user_register) {
         val radioGroupGender: RadioGroup = findViewById(R.id.radioGroupGender)
         val buttonSave: Button = findViewById(R.id.buttonSave)
         progressBar = findViewById(R.id.progressBar)
+        val photoPicker = PhotoPicker(this)
 
         // getting userRegister view model reference
-        val viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return UserRegisterViewModel(this@UserRegister) as T
-            }
-        })[UserRegisterViewModel::class.java]
-
-        // it will store MainActivity intent or null
-        // why it's here? ans:- [ if user came from Main Activity then we have to throw user again to Main Activity, otherwise do nothing]
-        var nextIntent: Intent? = Intent(this, MainActivity::class.java)
+        val viewModel = ViewModelProvider(this)[UserRegisterViewModel::class.java]
 
         viewModel.getProfileDetails()
 
@@ -53,12 +47,12 @@ class UserRegister : AppCompatActivity(R.layout.user_register) {
 
         editTextBirthDate.setOnClickListener {
             // start and end dates format should be yyyy-mm-dd (modify this function)
-            viewModel.datePicker.showDatePicker("Select Birth Date", null, null)
+            viewModel.datePicker.showDatePicker(this, "Select Birth Date")
         }
 
         imageViewProfilePicture.setOnClickListener {
             // start photo picker
-            viewModel.photoPicker.showPhotoPicker()
+            photoPicker.showPhotoPicker()
         }
 
         buttonSave.setOnClickListener {
@@ -69,8 +63,9 @@ class UserRegister : AppCompatActivity(R.layout.user_register) {
             isValid = isValid(editTextBirthDate) and isValid
 
             if (isValid) {
-                // uploading the user data
                 showProgress()
+
+                // uploading the user data
                 viewModel.saveUserData(
                     this,
                     UserCollection(
@@ -101,8 +96,6 @@ class UserRegister : AppCompatActivity(R.layout.user_register) {
                 editTextBirthDate.setText(it.birthDate)
                 editTextAge.setText(viewModel.getAge(it.birthDate))
                 radioGroupGender.check(if (it.gender == "female") R.id.radioButtonFemale else R.id.radioButtonMale)
-                // if user came from home/other activity except mainActivity
-                nextIntent = null
             }
         }
 
@@ -128,7 +121,7 @@ class UserRegister : AppCompatActivity(R.layout.user_register) {
         }
 
         // it will execute when photo picker get image
-        viewModel.photoPicker.pickedImage.observe(this) { imageUri ->
+        photoPicker.pickedImage.observe(this) { imageUri ->
             // execute below code if imageUri is not null
             imageUri?.let {
                 viewModel.photoUrl = it
@@ -140,18 +133,10 @@ class UserRegister : AppCompatActivity(R.layout.user_register) {
         viewModel.isUploaded.observe(this) { isUploaded ->
             unShowProgress()
             if (isUploaded) {
-                Toast.makeText(
-                    this, "Detail save successfully", Toast.LENGTH_SHORT
-                ).show()
-
-                nextIntent?.let {
-                    startActivity(nextIntent)
-                }
+                Toast.makeText(this, "Details save successfully", Toast.LENGTH_LONG).show()
                 finish()
             } else {
-                Toast.makeText(
-                    this, "Failed save detail", Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(this, "Failed to save details", Toast.LENGTH_LONG).show()
             }
         }
     }

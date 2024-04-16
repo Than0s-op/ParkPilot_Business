@@ -40,18 +40,20 @@
             <!-- first section user profile and name -->
 
             <com.google.android.material.card.MaterialCardView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="@color/white"
                 app:cardElevation="5dp"
+                android:layout_marginHorizontal="30dp"
                 app:contentPadding="15dp">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:divider="@drawable/empty_mid_divider"
-                    android:gravity="center_vertical"
+                    android:gravity="center"
+                    android:weightSum="1"
                     android:showDividers="middle">
 
                     <androidx.cardview.widget.CardView
@@ -70,19 +72,19 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="?attr/textInputFilledStyle"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.7"
                         android:layout_height="wrap_content"
                         app:boxBackgroundColor="@color/white"
                         app:startIconDrawable="@drawable/person_icon">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextUserName"
-                            android:layout_width="175dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:hint="User Name"
                             android:inputType="textCapSentences"
-                            android:maxLength="10"
                             android:singleLine="true" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -105,7 +107,9 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/textInputLayoutFirstName"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_marginEnd="5dp"
+                        app:layout_constraintHorizontal_weight="1"
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toStartOf="@+id/textInputLayoutLastName"
                         app:layout_constraintHorizontal_bias="0.5"
@@ -114,7 +118,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextFirstName"
-                            android:layout_width="170dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="First Name"
                             android:inputType="textCapSentences"
@@ -124,8 +128,9 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/textInputLayoutLastName"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        app:layout_constraintHorizontal_weight="1"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/textInputLayoutFirstName"
@@ -133,7 +138,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextLastName"
-                            android:layout_width="170dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Last Name"
                             android:inputType="textCapSentences"
@@ -143,18 +148,20 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/textInputLayoutBirthDate"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        app:layout_constraintHorizontal_weight="0.7"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        app:layout_constraintEnd_toStartOf="@+id/textInputLayoutAge"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="5dp"
                         app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintEnd_toStartOf="@+id/textInputLayoutAge"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/textInputLayoutFirstName"
                         app:startIconDrawable="@drawable/date_range_icon">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextBirthDate"
-                            android:layout_width="250dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:focusable="false"
                             android:hint="Birth Date"
@@ -165,18 +172,18 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/textInputLayoutAge"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintHorizontal_weight="0.3"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
                         app:startIconDrawable="@drawable/age"
                         app:layout_constraintStart_toEndOf="@+id/textInputLayoutBirthDate"
                         app:layout_constraintTop_toBottomOf="@id/textInputLayoutLastName">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextAge"
-                            android:layout_width="90dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:enabled="false"
                             android:hint="Age"
