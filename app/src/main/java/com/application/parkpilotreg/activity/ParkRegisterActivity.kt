@@ -41,6 +41,7 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
         val editTextAddress: EditText = findViewById(R.id.editTextAddress)
         val buttonSubmit: Button = findViewById(R.id.buttonSubmit)
         val editTextStartingPrice: EditText = findViewById(R.id.editTextStartingPrice)
+        val editTextReservedSpots:EditText = findViewById(R.id.editTextReservedSpots)
         editTextOpenTime = findViewById(R.id.editTextOpenTime)
         editTextCloseTime = findViewById(R.id.editTextCloseTime)
         editTextPolicies = findViewById(R.id.editTextPolicies)
@@ -142,6 +143,7 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
             isValid = isValid(editTextStationName) and isValid
             isValid = isValid(editTextStartingPrice) and isValid
             isValid = isValid(editTextPolicies) and isValid
+            isValid = isValid(editTextReservedSpots) and isValid
 
             for (i in 0..<3) {
                 if (viewModel.imageViewsUri[i] == null) {
@@ -157,7 +159,7 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
                     StationBasic(
                         editTextStationName.text.toString(),
                         editTextStartingPrice.text.toString().toInt(),
-                        null
+                        editTextReservedSpots.text.toString().toInt()
                     ),
 
                     StationAdvance_DS(
@@ -199,6 +201,7 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
             it?.let {
                 editTextStationName.setText(it.name)
                 editTextStartingPrice.setText(it.price.toString())
+                editTextReservedSpots.setText(it.reserved.toString())
             }
         }
         viewModel.liveDataStationAdvance.observe(this) {
