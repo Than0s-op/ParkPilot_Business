@@ -1,6 +1,5 @@
 package com.application.parkpilotreg.activity
 
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -26,7 +25,7 @@ import org.osmdroid.views.MapView
 import com.application.parkpilotreg.AccessHours as DataAccessHours
 import com.application.parkpilotreg.StationAdvance as StationAdvance_DS
 
-class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
+class SpotRegister : AppCompatActivity(R.layout.park_register) {
     private lateinit var chipGroupDays: ChipGroup
     private lateinit var chipGroupAmenities: ChipGroup
     private lateinit var progressBar: ProgressBar

@@ -11,7 +11,7 @@ import com.application.parkpilotreg.R
 import com.application.parkpilotreg.User
 import com.application.parkpilotreg.activity.Authentication
 import com.application.parkpilotreg.activity.Main
-import com.application.parkpilotreg.activity.ParkRegisterActivity
+import com.application.parkpilotreg.activity.SpotRegister
 import com.application.parkpilotreg.activity.UserRegister
 import com.application.parkpilotreg.module.PhotoLoader
 import com.application.parkpilotreg.module.firebase.Storage
@@ -45,7 +45,7 @@ class ProfileViewModel : ViewModel() {
     }
 
     fun spotDetail(context: Context) {
-        context.startActivity(Intent(context, ParkRegisterActivity::class.java))
+        context.startActivity(Intent(context, SpotRegister::class.java))
     }
 
     fun loadProfile(context: Context, profileImage: ImageView, profileName: TextView) {
