@@ -7,7 +7,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.application.parkpilotreg.User as appUser
 
-class MainActivity : Activity() {
+class Main : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -20,7 +20,7 @@ class MainActivity : Activity() {
             appUser.UID = Firebase.auth.currentUser?.uid!!
 
             // start the registration activity
-            startActivity(Intent(this@MainActivity, Setting::class.java).apply {
+            startActivity(Intent(this@Main, Setting::class.java).apply {
                 // clear the activity stack
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             })

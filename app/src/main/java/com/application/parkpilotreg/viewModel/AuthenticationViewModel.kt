@@ -9,7 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.application.parkpilotreg.activity.Authentication
-import com.application.parkpilotreg.activity.MainActivity
+import com.application.parkpilotreg.activity.Main
 import com.application.parkpilotreg.module.firebase.authentication.GoogleSignIn
 import com.application.parkpilotreg.module.firebase.authentication.PhoneAuth
 import kotlinx.coroutines.launch
@@ -83,7 +83,7 @@ class AuthenticationViewModel(activity: Authentication) : ViewModel() {
 
     fun startNextActivity(context: Context) {
         // init intent to Main activity
-        val intent = Intent(context, MainActivity::class.java)
+        val intent = Intent(context, Main::class.java)
         // clear task stack
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         // start activity

@@ -64,7 +64,6 @@ class ParkRegisterActivity : AppCompatActivity(R.layout.park_register) {
             layoutLocationPicker.findViewById(R.id.buttonCurrentLocation)!!
         val dialogBox = MaterialAlertDialogBuilder(this).setView(layoutLocationPicker).create()
 
-
         var openFlag = false
 
         val viewModel = ViewModelProvider(this)[ParkRegisterViewModel::class.java]

@@ -10,7 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.application.parkpilotreg.R
 import com.application.parkpilotreg.User
 import com.application.parkpilotreg.activity.Authentication
-import com.application.parkpilotreg.activity.MainActivity
+import com.application.parkpilotreg.activity.Main
 import com.application.parkpilotreg.activity.ParkRegisterActivity
 import com.application.parkpilotreg.activity.UserRegister
 import com.application.parkpilotreg.module.PhotoLoader
@@ -31,7 +31,7 @@ class ProfileViewModel : ViewModel() {
         Toast.makeText(context, "Logout Successfully", Toast.LENGTH_SHORT).show()
 
         // creating the intent of Authentication activity
-        val intent = Intent(context, MainActivity::class.java).apply {
+        val intent = Intent(context, Main::class.java).apply {
             // to clear activity stack
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
