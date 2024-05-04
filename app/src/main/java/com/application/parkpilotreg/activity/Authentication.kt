@@ -55,7 +55,7 @@ class Authentication : AppCompatActivity() {
         binding.buttonVerifyPhoneNumber.setOnClickListener { _ ->
 
             // mobile number validation
-            if (binding.editTextPhoneNumber.text?.length != 10) {
+            if (isInvalidPhoneNumber(binding.editTextPhoneNumber.text.toString())) {
                 binding.editTextPhoneNumber.error = "Invalid number"
                 return@setOnClickListener
             } else {
@@ -197,5 +197,10 @@ class Authentication : AppCompatActivity() {
 
         // to enable user interaction with ui
         window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+    }
+
+    private fun isInvalidPhoneNumber(number: String): Boolean {
+        val pattern = Regex("[0-9]{10}")
+        return !pattern.matches(number)
     }
 }
