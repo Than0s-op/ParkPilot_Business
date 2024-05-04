@@ -21,10 +21,6 @@ import com.google.firebase.auth.auth
 import kotlinx.coroutines.launch
 
 class ProfileViewModel : ViewModel() {
-    fun login(context: Context) {
-        context.startActivity(Intent(context, Authentication::class.java))
-    }
-
     fun logout(context: Context) {
         // sign out the user
         Firebase.auth.signOut()
