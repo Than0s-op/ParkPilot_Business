@@ -1,14 +1,9 @@
 package com.application.parkpilotreg.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
-import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
@@ -19,20 +14,24 @@ import com.application.parkpilotreg.UserCollection
 import com.application.parkpilotreg.UserProfile
 import com.application.parkpilotreg.databinding.UserRegisterBinding
 import com.application.parkpilotreg.module.PhotoPicker
+import com.application.parkpilotreg.viewModel.AuthenticationViewModel
 import com.application.parkpilotreg.viewModel.UserRegisterViewModel
 
 class UserRegister : AppCompatActivity() {
-    private lateinit var binding:UserRegisterBinding
+    private lateinit var binding: UserRegisterBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = UserRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val photoPicker = PhotoPicker(this)
 
         // getting userRegister view model reference
-        val viewModel = ViewModelProvider(this)[UserRegisterViewModel::class.java]
+        val viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return UserRegisterViewModel(this@UserRegister) as T
+            }
+        })[UserRegisterViewModel::class.java]
 
         viewModel.getProfileDetails()
 
@@ -46,15 +45,19 @@ class UserRegister : AppCompatActivity() {
 
         binding.imageViewProfilePicture.setOnClickListener {
             // start photo picker
-            photoPicker.showPhotoPicker()
+            viewModel.photoPicker.showPhotoPicker()
         }
 
         binding.buttonSave.setOnClickListener {
             var isValid = true
-            isValid = isValid(binding.editTextUserName) and isValid
-            isValid = isValid(binding.editTextFirstName) and isValid
-            isValid = isValid(binding.editTextLastName) and isValid
-            isValid = isValid(binding.editTextBirthDate) and isValid
+            if (isInvalidName(binding.editTextFirstName.text.toString())) {
+                binding.editTextFirstName.error = "Field must contain [A-Z] [a-z] characters"
+                isValid = false
+            }
+            if (isInvalidName(binding.editTextLastName.text.toString())) {
+                binding.editTextLastName.error = "Field must contain [A-Z] [a-z] characters"
+                isValid = false
+            }
 
             if (isValid) {
                 showProgress()
@@ -115,7 +118,7 @@ class UserRegister : AppCompatActivity() {
         }
 
         // it will execute when photo picker get image
-        photoPicker.pickedImage.observe(this) { imageUri ->
+        viewModel.photoPicker.pickedImage.observe(this) { imageUri ->
             // execute below code if imageUri is not null
             imageUri?.let {
                 viewModel.photoUrl = it
@@ -135,14 +138,9 @@ class UserRegister : AppCompatActivity() {
         }
     }
 
-    private fun isValid(editText: EditText): Boolean {
-        return if (editText.text.isBlank()) {
-            editText.error = "Must not be blank"
-            false
-        } else {
-            editText.error = null
-            true
-        }
+    private fun isInvalidName(name: String): Boolean {
+        val pattern = Regex("[A-Za-z]+")
+        return !pattern.matches(name)
     }
 
     private fun showProgress() {
