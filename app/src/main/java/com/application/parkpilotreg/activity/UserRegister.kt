@@ -3,7 +3,6 @@ package com.application.parkpilotreg.activity
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
@@ -13,8 +12,6 @@ import com.application.parkpilotreg.R
 import com.application.parkpilotreg.UserCollection
 import com.application.parkpilotreg.UserProfile
 import com.application.parkpilotreg.databinding.UserRegisterBinding
-import com.application.parkpilotreg.module.PhotoPicker
-import com.application.parkpilotreg.viewModel.AuthenticationViewModel
 import com.application.parkpilotreg.viewModel.UserRegisterViewModel
 
 class UserRegister : AppCompatActivity() {
@@ -40,7 +37,7 @@ class UserRegister : AppCompatActivity() {
 
         binding.editTextBirthDate.setOnClickListener {
             // start and end dates format should be yyyy-mm-dd (modify this function)
-            viewModel.datePicker.showDatePicker(this, "Select Birth Date")
+            viewModel.datePicker.show(this)
         }
 
         binding.imageViewProfilePicture.setOnClickListener {

@@ -21,8 +21,10 @@ import com.google.firebase.auth.auth
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
+import java.util.Calendar
 
-class UserRegisterViewModel(context:Context) : ViewModel() {
+class UserRegisterViewModel(context: Context) : ViewModel() {
     // it will store user profile image's Uri
     var photoUrl: Uri? = null
 
@@ -32,14 +34,20 @@ class UserRegisterViewModel(context:Context) : ViewModel() {
     val imageLoaderResult = MutableLiveData<ImageResult>()
     val isUploaded = MutableLiveData<Boolean>()
 
-    private val simpleDateFormat = SimpleDateFormat("dd-M-yyyy")
-    private val startDate = simpleDateFormat.parse("25-11-1950")!!
-    private val endDate = simpleDateFormat.parse("25-11-2023")!!
     private val userBasic = UserBasic()
     private val userAdvance = UserAdvance()
     private val storage = Storage()
-    val datePicker = DatePicker(startDate.time,endDate.time)
-    val z = LocalDate.now()
+    private val currentTime = java.time.Instant.now()
+    private val calendar = Calendar.getInstance()
+    private val endDate = calendar.let {
+        it.add(Calendar.YEAR, -18)
+        it.timeInMillis
+    }
+    private val startDate = calendar.let {
+        it.add(Calendar.YEAR, -50)
+        it.timeInMillis
+    }
+    val datePicker = DatePicker(startDate, endDate)
     val photoPicker = PhotoPicker(context)
 
 
