@@ -3,10 +3,8 @@ package com.application.parkpilotreg.activity
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
@@ -18,12 +16,8 @@ import com.application.parkpilotreg.databinding.LocationPickerBinding
 import com.application.parkpilotreg.databinding.SpotRegisterBinding
 import com.application.parkpilotreg.viewModel.ParkRegisterViewModel
 import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.search.SearchBar
-import com.google.android.material.search.SearchView
 import org.osmdroid.util.GeoPoint
-import org.osmdroid.views.MapView
 import com.application.parkpilotreg.AccessHours as DataAccessHours
 import com.application.parkpilotreg.StationAdvance as StationAdvance_DS
 
