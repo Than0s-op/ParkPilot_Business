@@ -37,7 +37,6 @@ class UserRegisterViewModel(context: Context) : ViewModel() {
     private val userBasic = UserBasic()
     private val userAdvance = UserAdvance()
     private val storage = Storage()
-    private val currentTime = java.time.Instant.now()
     private val calendar = Calendar.getInstance()
     private val endDate = calendar.let {
         it.add(Calendar.YEAR, -18)
