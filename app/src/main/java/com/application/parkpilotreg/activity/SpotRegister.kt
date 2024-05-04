@@ -14,6 +14,8 @@ import androidx.lifecycle.ViewModelProvider
 import coil.load
 import com.application.parkpilotreg.R
 import com.application.parkpilotreg.StationBasic
+import com.application.parkpilotreg.databinding.LocationPickerBinding
+import com.application.parkpilotreg.databinding.SpotRegisterBinding
 import com.application.parkpilotreg.viewModel.ParkRegisterViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
@@ -25,28 +27,13 @@ import org.osmdroid.views.MapView
 import com.application.parkpilotreg.AccessHours as DataAccessHours
 import com.application.parkpilotreg.StationAdvance as StationAdvance_DS
 
-class SpotRegister : AppCompatActivity(R.layout.park_register) {
-    private lateinit var chipGroupDays: ChipGroup
-    private lateinit var chipGroupAmenities: ChipGroup
-    private lateinit var progressBar: ProgressBar
-    private lateinit var editTextPolicies: EditText
-    private lateinit var editTextOpenTime: EditText
-    private lateinit var editTextCloseTime: EditText
+class SpotRegister : AppCompatActivity(R.layout.spot_register) {
+    private lateinit var binding: SpotRegisterBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val editTextStationName: EditText = findViewById(R.id.editTextStationName)
-        val buttonLocationPick: Button = findViewById(R.id.buttonLocationPick)
-        val editTextAddress: EditText = findViewById(R.id.editTextAddress)
-        val buttonSubmit: Button = findViewById(R.id.buttonSubmit)
-        val editTextStartingPrice: EditText = findViewById(R.id.editTextStartingPrice)
-        val editTextReservedSpots:EditText = findViewById(R.id.editTextReservedSpots)
-        editTextOpenTime = findViewById(R.id.editTextOpenTime)
-        editTextCloseTime = findViewById(R.id.editTextCloseTime)
-        editTextPolicies = findViewById(R.id.editTextPolicies)
-        chipGroupDays = findViewById(R.id.chipGroupDays)
-        chipGroupAmenities = findViewById(R.id.chipGroupAmenities)
-        progressBar = findViewById(R.id.progressBar)
+        binding = SpotRegisterBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val imageViews = arrayOf<ImageView>(
             findViewById(R.id.imageView1),
@@ -54,14 +41,10 @@ class SpotRegister : AppCompatActivity(R.layout.park_register) {
             findViewById(R.id.imageView3)
         )
 
-        val layoutLocationPicker = layoutInflater.inflate(R.layout.location_picker, null, false)
+        val bindingLocationPicker = LocationPickerBinding.inflate(layoutInflater)
 
-        val searchView: SearchView = layoutLocationPicker.findViewById(R.id.searchView)!!
-        val searchBar: SearchBar = layoutLocationPicker.findViewById(R.id.searchBar)!!
-        val mapView: MapView = layoutLocationPicker.findViewById(R.id.mapViewOSM)!!
-        val buttonCurrentLocation: Button =
-            layoutLocationPicker.findViewById(R.id.buttonCurrentLocation)!!
-        val dialogBox = MaterialAlertDialogBuilder(this).setView(layoutLocationPicker).create()
+        val dialogBox =
+            MaterialAlertDialogBuilder(this).setView(bindingLocationPicker.root).create()
 
         var openFlag = false
 
@@ -69,22 +52,22 @@ class SpotRegister : AppCompatActivity(R.layout.park_register) {
 
         viewModel.loadActivity()
 
-        viewModel.init(this, mapView)
+        viewModel.init(this, bindingLocationPicker.mapView)
 
-        buttonLocationPick.setOnClickListener {
+        binding.buttonLocationPick.setOnClickListener {
             dialogBox.show()
         }
 
         dialogBox.setOnDismissListener {
-            viewModel.fillAddress(this, editTextAddress, viewModel.marker.position)
+            viewModel.fillAddress(this, binding.editTextAddress, viewModel.marker.position)
         }
 
-        editTextOpenTime.setOnClickListener {
+        binding.linearLayoutTimeShower.editTextOpenTime.setOnClickListener {
             openFlag = true
             viewModel.timePicker(supportFragmentManager, "open")
         }
 
-        editTextCloseTime.setOnClickListener {
+        binding.linearLayoutTimeShower.editTextCloseTime.setOnClickListener {
             viewModel.timePicker(supportFragmentManager, "close")
         }
 
@@ -120,28 +103,28 @@ class SpotRegister : AppCompatActivity(R.layout.park_register) {
         }
 
         // when user will type in search bar and press search(action) button (present on keyboard)
-        searchView.editText.setOnEditorActionListener { _, _, _ ->
+        bindingLocationPicker.searchView.editText.setOnEditorActionListener { _, _, _ ->
 
             // hide the searchView(search suggestion box)
-            searchView.hide()
+            bindingLocationPicker.searchView.hide()
 
             // creating co-routine scope to run search method
-            viewModel.search(this, searchView.text.toString())
+            viewModel.search(this, bindingLocationPicker.searchView.text.toString())
             false
         }
 
         // when current location button press
-        buttonCurrentLocation.setOnClickListener {
+        bindingLocationPicker.buttonCurrentLocation.setOnClickListener {
             // it will set current location in mapView
             viewModel.getCurrentLocation(this)
         }
 
-        buttonSubmit.setOnClickListener {
+        binding.buttonSubmit.setOnClickListener {
             var isValid = true
-            isValid = isValid(editTextStationName) and isValid
-            isValid = isValid(editTextStartingPrice) and isValid
-            isValid = isValid(editTextPolicies) and isValid
-            isValid = isValid(editTextReservedSpots) and isValid
+            isValid = isValid(binding.editTextStationName) and isValid
+            isValid = isValid(binding.editTextStartingPrice) and isValid
+            isValid = isValid(binding.editTextPolicies) and isValid
+            isValid = isValid(binding.editTextReservedSpots) and isValid
 
             for (i in 0..<3) {
                 if (viewModel.imageViewsUri[i] == null) {
@@ -155,13 +138,13 @@ class SpotRegister : AppCompatActivity(R.layout.park_register) {
                 viewModel.uploadDetails(
                     this,
                     StationBasic(
-                        editTextStationName.text.toString(),
-                        editTextStartingPrice.text.toString().toInt(),
-                        editTextReservedSpots.text.toString().toInt()
+                        binding.editTextStationName.text.toString(),
+                        binding.editTextStartingPrice.text.toString().toInt(),
+                        binding.editTextReservedSpots.text.toString().toInt()
                     ),
 
                     StationAdvance_DS(
-                        editTextPolicies.text.toString(),
+                        binding.editTextPolicies.text.toString(),
                         getAmenities(),
                         getAccessTime()
                     )
@@ -173,10 +156,18 @@ class SpotRegister : AppCompatActivity(R.layout.park_register) {
 
         viewModel.timePicker.liveDataTimePicker.observe(this) {
             if (openFlag) {
-                editTextOpenTime.setText(viewModel.timePicker.format12(it))
+                binding.linearLayoutTimeShower.editTextOpenTime.setText(
+                    viewModel.timePicker.format12(
+                        it
+                    )
+                )
                 openFlag = false
             } else {
-                editTextCloseTime.setText(viewModel.timePicker.format12(it))
+                binding.linearLayoutTimeShower.editTextCloseTime.setText(
+                    viewModel.timePicker.format12(
+                        it
+                    )
+                )
             }
         }
 
@@ -197,16 +188,16 @@ class SpotRegister : AppCompatActivity(R.layout.park_register) {
 
         viewModel.liveDataStationBasic.observe(this) {
             it?.let {
-                editTextStationName.setText(it.name)
-                editTextStartingPrice.setText(it.price.toString())
-                editTextReservedSpots.setText(it.reserved.toString())
+                binding.editTextStationName.setText(it.name)
+                binding.editTextStartingPrice.setText(it.price.toString())
+                binding.editTextReservedSpots.setText(it.reserved.toString())
             }
         }
         viewModel.liveDataStationAdvance.observe(this) {
             it?.let {
-                editTextPolicies.setText(it.policies)
-                editTextOpenTime.setText(it.accessHours.open)
-                editTextCloseTime.setText(it.accessHours.close)
+                binding.editTextPolicies.setText(it.policies)
+                binding.linearLayoutTimeShower.editTextOpenTime.setText(it.accessHours.open)
+                binding.linearLayoutTimeShower.editTextCloseTime.setText(it.accessHours.close)
                 loadDaysSwitch(it.accessHours.selectedDays)
                 loadAmenities(it.amenities)
             }
@@ -214,7 +205,7 @@ class SpotRegister : AppCompatActivity(R.layout.park_register) {
         viewModel.liveDataStationLocation.observe(this) {
             it?.let {
                 val geoPoint = GeoPoint(it.latitude, it.longitude)
-                viewModel.fillAddress(this, editTextAddress, geoPoint)
+                viewModel.fillAddress(this, binding.editTextAddress, geoPoint)
                 viewModel.setMarker(geoPoint)
             }
         }
@@ -242,7 +233,7 @@ class SpotRegister : AppCompatActivity(R.layout.park_register) {
     private fun getAmenities(): List<String> {
         val selectedAmenities: ArrayList<String> = ArrayList()
         selectedAmenities.apply {
-            for (id in chipGroupAmenities.checkedChipIds) {
+            for (id in binding.chipGroupAmenities.chipGroupAmenities.checkedChipIds) {
                 when (id) {
                     R.id.chipEvCharging -> add(getString(R.string.ev_charging))
                     R.id.chipValet -> add(getString(R.string.valet))
@@ -258,13 +249,19 @@ class SpotRegister : AppCompatActivity(R.layout.park_register) {
     private fun loadAmenities(list: List<String>) {
         for (i in list) {
             when (i) {
-                getString(R.string.ev_charging) -> (chipGroupAmenities[0] as Chip).isChecked = true
-                getString(R.string.valet) -> (chipGroupAmenities[1] as Chip).isChecked = true
-                getString(R.string.garage) -> (chipGroupAmenities[2] as Chip).isChecked = true
-                getString(R.string.on_site_staff) -> (chipGroupAmenities[3] as Chip).isChecked =
+                getString(R.string.ev_charging) -> (binding.chipGroupAmenities.chipGroupAmenities[0] as Chip).isChecked =
                     true
 
-                getString(R.string.wheelchair_accessible) -> (chipGroupAmenities[4] as Chip).isChecked =
+                getString(R.string.valet) -> (binding.chipGroupAmenities.chipGroupAmenities[1] as Chip).isChecked =
+                    true
+
+                getString(R.string.garage) -> (binding.chipGroupAmenities.chipGroupAmenities[2] as Chip).isChecked =
+                    true
+
+                getString(R.string.on_site_staff) -> (binding.chipGroupAmenities.chipGroupAmenities[3] as Chip).isChecked =
+                    true
+
+                getString(R.string.wheelchair_accessible) -> (binding.chipGroupAmenities.chipGroupAmenities[4] as Chip).isChecked =
                     true
             }
         }
@@ -278,7 +275,7 @@ class SpotRegister : AppCompatActivity(R.layout.park_register) {
         val selectedDays: ArrayList<String> = ArrayList()
 
         selectedDays.apply {
-            for (id in chipGroupDays.checkedChipIds) {
+            for (id in binding.chipGroupDays.chipGroupDays.checkedChipIds) {
                 when (id) {
                     R.id.chipMonday -> add(getString(R.string.monday))
                     R.id.chipTuesday -> add(getString(R.string.tuesday))
@@ -300,7 +297,7 @@ class SpotRegister : AppCompatActivity(R.layout.park_register) {
 
     private fun showProgress() {
         // show progress bar
-        progressBar.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.VISIBLE
 
         // to disable user interaction with ui
         window.setFlags(
@@ -311,7 +308,7 @@ class SpotRegister : AppCompatActivity(R.layout.park_register) {
 
     private fun unShowProgress() {
         // hide progress bar
-        progressBar.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
 
         // to enable user interaction with ui
         window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
@@ -328,13 +325,26 @@ class SpotRegister : AppCompatActivity(R.layout.park_register) {
     private fun loadDaysSwitch(list: List<String>) {
         for (i in list) {
             when (i) {
-                getString(R.string.monday) -> (chipGroupDays[0] as Chip).isChecked = true
-                getString(R.string.tuesday) -> (chipGroupDays[1] as Chip).isChecked = true
-                getString(R.string.wednesday) -> (chipGroupDays[2] as Chip).isChecked = true
-                getString(R.string.thursday) -> (chipGroupDays[3] as Chip).isChecked = true
-                getString(R.string.friday) -> (chipGroupDays[4] as Chip).isChecked = true
-                getString(R.string.saturday) -> (chipGroupDays[5] as Chip).isChecked = true
-                getString(R.string.sunday) -> (chipGroupDays[6] as Chip).isChecked = true
+                getString(R.string.monday) -> (binding.chipGroupDays.chipGroupDays[0] as Chip).isChecked =
+                    true
+
+                getString(R.string.tuesday) -> (binding.chipGroupDays.chipGroupDays[1] as Chip).isChecked =
+                    true
+
+                getString(R.string.wednesday) -> (binding.chipGroupDays.chipGroupDays[2] as Chip).isChecked =
+                    true
+
+                getString(R.string.thursday) -> (binding.chipGroupDays.chipGroupDays[3] as Chip).isChecked =
+                    true
+
+                getString(R.string.friday) -> (binding.chipGroupDays.chipGroupDays[4] as Chip).isChecked =
+                    true
+
+                getString(R.string.saturday) -> (binding.chipGroupDays.chipGroupDays[5] as Chip).isChecked =
+                    true
+
+                getString(R.string.sunday) -> (binding.chipGroupDays.chipGroupDays[6] as Chip).isChecked =
+                    true
             }
         }
     }

@@ -30,7 +30,7 @@
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <org.osmdroid.views.MapView
-        android:id="@+id/mapViewOSM"
+        android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
