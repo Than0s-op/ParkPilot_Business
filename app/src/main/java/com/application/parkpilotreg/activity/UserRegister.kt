@@ -17,24 +17,18 @@ import coil.load
 import com.application.parkpilotreg.R
 import com.application.parkpilotreg.UserCollection
 import com.application.parkpilotreg.UserProfile
+import com.application.parkpilotreg.databinding.UserRegisterBinding
 import com.application.parkpilotreg.module.PhotoPicker
 import com.application.parkpilotreg.viewModel.UserRegisterViewModel
 
-class UserRegister : AppCompatActivity(R.layout.user_register) {
-    private lateinit var progressBar: ProgressBar
+class UserRegister : AppCompatActivity() {
+    private lateinit var binding:UserRegisterBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // init view
-        val imageViewProfilePicture: ImageView = findViewById(R.id.imageViewProfilePicture)
-        val editTextUserName: EditText = findViewById(R.id.editTextUserName)
-        val editTextFirstName: EditText = findViewById(R.id.editTextFirstName)
-        val editTextLastName: EditText = findViewById(R.id.editTextLastName)
-        val editTextBirthDate: EditText = findViewById(R.id.editTextBirthDate)
-        val editTextAge: EditText = findViewById(R.id.editTextAge)
-        val radioGroupGender: RadioGroup = findViewById(R.id.radioGroupGender)
-        val buttonSave: Button = findViewById(R.id.buttonSave)
-        progressBar = findViewById(R.id.progressBar)
+        binding = UserRegisterBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         val photoPicker = PhotoPicker(this)
 
         // getting userRegister view model reference
@@ -45,22 +39,22 @@ class UserRegister : AppCompatActivity(R.layout.user_register) {
         // get user details from user collection
         viewModel.getUserDetails()
 
-        editTextBirthDate.setOnClickListener {
+        binding.editTextBirthDate.setOnClickListener {
             // start and end dates format should be yyyy-mm-dd (modify this function)
             viewModel.datePicker.showDatePicker(this, "Select Birth Date")
         }
 
-        imageViewProfilePicture.setOnClickListener {
+        binding.imageViewProfilePicture.setOnClickListener {
             // start photo picker
             photoPicker.showPhotoPicker()
         }
 
-        buttonSave.setOnClickListener {
+        binding.buttonSave.setOnClickListener {
             var isValid = true
-            isValid = isValid(editTextUserName) and isValid
-            isValid = isValid(editTextFirstName) and isValid
-            isValid = isValid(editTextLastName) and isValid
-            isValid = isValid(editTextBirthDate) and isValid
+            isValid = isValid(binding.editTextUserName) and isValid
+            isValid = isValid(binding.editTextFirstName) and isValid
+            isValid = isValid(binding.editTextLastName) and isValid
+            isValid = isValid(binding.editTextBirthDate) and isValid
 
             if (isValid) {
                 showProgress()
@@ -69,13 +63,13 @@ class UserRegister : AppCompatActivity(R.layout.user_register) {
                 viewModel.saveUserData(
                     this,
                     UserCollection(
-                        editTextFirstName.text.toString(),
-                        editTextLastName.text.toString(),
-                        editTextBirthDate.text.toString(),
-                        if (radioGroupGender.checkedRadioButtonId == R.id.radioButtonFemale) "female" else "male"
+                        binding.editTextFirstName.text.toString(),
+                        binding.editTextLastName.text.toString(),
+                        binding.editTextBirthDate.text.toString(),
+                        if (binding.radioGroupGender.checkedRadioButtonId == R.id.radioButtonFemale) "female" else "male"
                     ),
                     UserProfile(
-                        editTextUserName.text.toString()
+                        binding.editTextUserName.text.toString()
                     )
                 )
             }
@@ -84,29 +78,29 @@ class UserRegister : AppCompatActivity(R.layout.user_register) {
         // it is a observer of getImage method's result
         viewModel.imageLoaderResult.observe(this) { image ->
             // loaded image applying to profile picture
-            imageViewProfilePicture.setImageDrawable(image.drawable)
+            binding.imageViewProfilePicture.setImageDrawable(image.drawable)
         }
 
         // it will execute when fireStore result get successfully
         viewModel.userInformation.observe(this) { userCollection ->
             // set the data if user Collection is not null
             userCollection?.let {
-                editTextFirstName.setText(it.firstName)
-                editTextLastName.setText(it.lastName)
-                editTextBirthDate.setText(it.birthDate)
-                editTextAge.setText(viewModel.getAge(it.birthDate))
-                radioGroupGender.check(if (it.gender == "female") R.id.radioButtonFemale else R.id.radioButtonMale)
+                binding.editTextFirstName.setText(it.firstName)
+                binding.editTextLastName.setText(it.lastName)
+                binding.editTextBirthDate.setText(it.birthDate)
+                binding.editTextAge.setText(viewModel.getAge(it.birthDate))
+                binding.radioGroupGender.check(if (it.gender == "female") R.id.radioButtonFemale else R.id.radioButtonMale)
             }
         }
 
         viewModel.userProfile.observe(this) { userProfile ->
             userProfile?.let {
-                editTextUserName.setText(userProfile.userName)
+                binding.editTextUserName.setText(userProfile.userName)
                 if (userProfile.userPicture != null) {
-                    imageViewProfilePicture.load(userProfile.userPicture)
+                    binding.imageViewProfilePicture.load(userProfile.userPicture)
                     viewModel.photoUrl = userProfile.userPicture
                 } else {
-                    imageViewProfilePicture.load(R.drawable.person_icon)
+                    binding.imageViewProfilePicture.load(R.drawable.person_icon)
                 }
             }
         }
@@ -115,8 +109,8 @@ class UserRegister : AppCompatActivity(R.layout.user_register) {
         viewModel.datePicker.pickedDate.observe(this) { date ->
             // set date to birthdate editText if is not null
             date?.let {
-                editTextBirthDate.setText(it)
-                editTextAge.setText(viewModel.getAge(it))
+                binding.editTextBirthDate.setText(it)
+                binding.editTextAge.setText(viewModel.getAge(it))
             }
         }
 
@@ -125,7 +119,7 @@ class UserRegister : AppCompatActivity(R.layout.user_register) {
             // execute below code if imageUri is not null
             imageUri?.let {
                 viewModel.photoUrl = it
-                imageViewProfilePicture.setImageURI(it)
+                binding.imageViewProfilePicture.setImageURI(it)
             }
         }
 
@@ -153,7 +147,7 @@ class UserRegister : AppCompatActivity(R.layout.user_register) {
 
     private fun showProgress() {
         // show progress bar
-        progressBar.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.VISIBLE
 
         // to disable user interaction with ui
         window.setFlags(
@@ -164,7 +158,7 @@ class UserRegister : AppCompatActivity(R.layout.user_register) {
 
     private fun unShowProgress() {
         // hide progress bar
-        progressBar.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
 
         // to enable user interaction with ui
         window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
