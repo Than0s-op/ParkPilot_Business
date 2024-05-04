@@ -14,33 +14,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.application.parkpilotreg.R
+import com.application.parkpilotreg.databinding.AuthenticationBinding
 import com.application.parkpilotreg.viewModel.AuthenticationViewModel
 import com.chaos.view.PinView
 import com.hbb20.CountryCodePicker
 
 
-class Authentication : AppCompatActivity(R.layout.authentication) {
-    private lateinit var progressBar: ProgressBar
+class Authentication : AppCompatActivity() {
+    private lateinit var binding: AuthenticationBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // init views
-        val editTextPhoneNumber: EditText = findViewById(R.id.editTextPhoneNumber)
-        val buttonVerifyPhoneNumber: Button = findViewById(R.id.buttonVerifyPhoneNumber)
-        progressBar = findViewById(R.id.progressBar)
-        val scrollViewLogin: ScrollView = findViewById(R.id.scrollViewLogin)
-        val scrollViewOTP: ScrollView = findViewById(R.id.scrollViewOTP)
-        val pinViewOTP: PinView = findViewById(R.id.pinViewOTP)
-        val buttonOTPVerification: Button = findViewById(R.id.buttonOTPVerification)
-        val countryCodePicker: CountryCodePicker = findViewById(R.id.countryCodePicker)
-        val textViewNumber: TextView = findViewById(R.id.textViewNumber)
-        val buttonResendOTP: Button = findViewById(R.id.buttonResendOTP)
+        binding = AuthenticationBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        findViewById<RelativeLayout>(R.id.divider1).findViewById<TextView>(R.id.dividerTextView).text =
-            "Log in or sign up"
+        binding.divider1.dividerTextView.text = "Log in or sign up"
 
-        findViewById<RelativeLayout>(R.id.divider2).findViewById<TextView>(R.id.dividerTextView).text =
-            "or"
+        binding.divider2.dividerTextView.text = "or"
 
         // getting authentication view model reference [init]
         val viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
@@ -52,24 +42,24 @@ class Authentication : AppCompatActivity(R.layout.authentication) {
         // [init]
         // setting phone number to (We have sent a verification code to) text view
         // [we are setting here because of reconfiguration, if activity will regenerate we will set phone number to that view again]
-        textViewNumber.text = viewModel.dashSeparate(viewModel.phoneNumberWithCountryCode)
+        binding.textViewNumber.text = viewModel.dashSeparate(viewModel.phoneNumberWithCountryCode)
 
 //      .......... [ phone auth ] ................
 
 
         // setting visibility as according to view model [init]
-        scrollViewLogin.visibility = viewModel.scrollViewLoginVisibility
-        scrollViewOTP.visibility = viewModel.scrollViewOTPVisibility
+        binding.scrollViewLogin.visibility = viewModel.scrollViewLoginVisibility
+        binding.scrollViewOTP.visibility = viewModel.scrollViewOTPVisibility
 
 
-        buttonVerifyPhoneNumber.setOnClickListener { _ ->
+        binding.buttonVerifyPhoneNumber.setOnClickListener { _ ->
 
             // mobile number validation
-            if (editTextPhoneNumber.text.length != 10) {
-                editTextPhoneNumber.error = "Invalid number"
+            if (binding.editTextPhoneNumber.text?.length != 10) {
+                binding.editTextPhoneNumber.error = "Invalid number"
                 return@setOnClickListener
             } else {
-                editTextPhoneNumber.error = null
+                binding.editTextPhoneNumber.error = null
             }
 
             // progress bar
@@ -77,10 +67,11 @@ class Authentication : AppCompatActivity(R.layout.authentication) {
 
             // storing user number with country code
             viewModel.phoneNumberWithCountryCode =
-                countryCodePicker.selectedCountryCodeWithPlus + editTextPhoneNumber.text.toString()
+                binding.countryCodePicker.selectedCountryCodeWithPlus + binding.editTextPhoneNumber.text.toString()
 
             // set phone number with country code to OTP view's message (We have sent a verification code to)
-            textViewNumber.text = viewModel.dashSeparate(viewModel.phoneNumberWithCountryCode)
+            binding.textViewNumber.text =
+                viewModel.dashSeparate(viewModel.phoneNumberWithCountryCode)
 
             // start verification
             viewModel.sendVerificationCode()
@@ -99,13 +90,13 @@ class Authentication : AppCompatActivity(R.layout.authentication) {
             if (verificationCode.isNotEmpty()) {
                 // hide login view and
                 View.GONE.let {
-                    scrollViewLogin.visibility = it
+                    binding.scrollViewLogin.visibility = it
                     viewModel.scrollViewLoginVisibility = it
                 }
 
                 // show OTP view
                 View.VISIBLE.let {
-                    scrollViewOTP.visibility = it
+                    binding.scrollViewOTP.visibility = it
                     viewModel.scrollViewOTPVisibility = it
                 }
 
@@ -119,12 +110,12 @@ class Authentication : AppCompatActivity(R.layout.authentication) {
             }
         }
 
-        buttonOTPVerification.setOnClickListener { _ ->
+        binding.buttonOTPVerification.setOnClickListener { _ ->
             showProgress()
 
             // pass user entered OTP to check entered OTP correct or not
             viewModel.verifyPhoneNumberWithCode(
-                pinViewOTP.text.toString()
+                binding.pinViewOTP.text.toString()
             )
         }
 
@@ -140,29 +131,29 @@ class Authentication : AppCompatActivity(R.layout.authentication) {
                 viewModel.startNextActivity(this)
             } else {
                 // clear OTP box
-                pinViewOTP.setText("")
+                binding.pinViewOTP.setText("")
 
                 // disable OTP view and
                 View.GONE.let {
-                    scrollViewOTP.visibility = it
+                    binding.scrollViewOTP.visibility = it
                     viewModel.scrollViewOTPVisibility = it
                 }
 
                 // show login view again
                 View.VISIBLE.let {
-                    scrollViewLogin.visibility = it
+                    binding.scrollViewLogin.visibility = it
                     viewModel.scrollViewLoginVisibility = it
                 }
 
                 // clear phone number text view
-                editTextPhoneNumber.setText("")
+                binding.editTextPhoneNumber.setText("")
 
                 // show failed toast
                 Toast.makeText(this, "Invalid OTP", Toast.LENGTH_SHORT).show()
             }
         }
 
-        buttonResendOTP.setOnClickListener { _ ->
+        binding.buttonResendOTP.setOnClickListener { _ ->
             // resend verification code request
             viewModel.resendVerificationCode()
         }
@@ -191,7 +182,7 @@ class Authentication : AppCompatActivity(R.layout.authentication) {
 
     private fun showProgress() {
         // show progress bar
-        progressBar.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.VISIBLE
 
         // to disable user interaction with ui
         window.setFlags(
@@ -202,7 +193,7 @@ class Authentication : AppCompatActivity(R.layout.authentication) {
 
     private fun unShowProgress() {
         // hide progress bar
-        progressBar.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
 
         // to enable user interaction with ui
         window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
