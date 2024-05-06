@@ -30,9 +30,9 @@ class SpotRegister : AppCompatActivity(R.layout.spot_register) {
         setContentView(binding.root)
 
         val imageViews = arrayOf<ImageView>(
-            findViewById(R.id.imageView1),
-            findViewById(R.id.imageView2),
-            findViewById(R.id.imageView3)
+            binding.imageView1,
+            binding.imageView2,
+            binding.imageView3
         )
 
         val bindingLocationPicker = LocationPickerBinding.inflate(layoutInflater)
@@ -272,10 +272,6 @@ class SpotRegister : AppCompatActivity(R.layout.spot_register) {
     }
 
     private fun getAccessTime(): DataAccessHours {
-        val editTextOpenTime: EditText = findViewById(R.id.editTextOpenTime)
-        val editTextCloseTime: EditText = findViewById(R.id.editTextCloseTime)
-
-
         val selectedDays: ArrayList<String> = ArrayList()
 
         selectedDays.apply {
@@ -293,8 +289,8 @@ class SpotRegister : AppCompatActivity(R.layout.spot_register) {
         }
 
         return DataAccessHours(
-            editTextOpenTime.text.toString(),
-            editTextCloseTime.text.toString(),
+            binding.linearLayoutTimeShower.editTextOpenTime.text.toString(),
+            binding.linearLayoutTimeShower.editTextCloseTime.text.toString(),
             selectedDays
         )
     }
