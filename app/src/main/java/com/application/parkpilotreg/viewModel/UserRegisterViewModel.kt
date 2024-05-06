@@ -33,6 +33,7 @@ class UserRegisterViewModel(context: Context) : ViewModel() {
     val userProfile = MutableLiveData<UserProfile?>()
     val imageLoaderResult = MutableLiveData<ImageResult>()
     val isUploaded = MutableLiveData<Boolean>()
+    val isUnique = MutableLiveData<Boolean>()
 
     private val userBasic = UserBasic()
     private val userAdvance = UserAdvance()
@@ -55,6 +56,12 @@ class UserRegisterViewModel(context: Context) : ViewModel() {
         viewModelScope.launch {
             // call to fireStore
             userInformation.value = userAdvance.userGet(User.UID)
+        }
+    }
+
+    fun isUnique(userName: String) {
+        viewModelScope.launch {
+            isUnique.value = userBasic.isUnique(userName)
         }
     }
 

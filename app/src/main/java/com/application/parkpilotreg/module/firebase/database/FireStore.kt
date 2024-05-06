@@ -14,8 +14,10 @@ import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.application.parkpilotreg.Feedback as FeedbackData
 import com.google.firebase.auth.userProfileChangeRequest
+import com.google.firebase.firestore.AggregateSource
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.Source
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.tasks.await
 
@@ -62,6 +64,15 @@ class UserBasic : FireStore() {
             }
         }
         return result
+    }
+
+    suspend fun isUnique(userName: String): Boolean {
+        val aggregateCount = fireStore.collection(collectionName)
+            .whereEqualTo(this.userName, userName)
+            .count()
+            .get(AggregateSource.SERVER)
+            .await()
+        return aggregateCount.count == 0L
     }
 }
 
@@ -110,63 +121,6 @@ class UserAdvance : FireStore() {
                     get(birthDate) as String,
                     get(gender) as String
                 )
-            }
-        }
-        return result
-    }
-}
-
-class QRCode : FireStore() {
-    private val collectionName = "qrCodes"
-    private val from = "from"
-    private val to = "to"
-    private val validStatus = "valid"
-
-    // To put date into user collection in specific document
-    suspend fun QRCodeSet(data: QRCodeCollection, documentID: String): Boolean {
-        // for success result
-        var result = false
-
-        // data mapping
-        val map = mapOf(
-            data.key to mapOf(
-                from to data.from,
-                to to data.to,
-                validStatus to data.valid,
-            )
-        )
-
-        // await function this will block thread
-        fireStore.collection(collectionName).document(documentID).set(map, SetOptions.merge())
-            .addOnSuccessListener {
-                // call successfully perform
-                result = true
-            }.await()
-
-        // return result
-        return result
-    }
-
-    // To get data from user collection with specific document
-    @Suppress("UNCHECKED_CAST")
-    suspend fun QRCodeGet(documentID: String): ArrayList<QRCodeCollection> {
-        val result: ArrayList<QRCodeCollection> = ArrayList()
-        // await function this will block thread
-        fireStore.collection(collectionName).document(documentID).get().await().let { document ->
-            document.data?.let {
-                val fields = it as? Map<String, Map<String, Any>>
-                if (fields != null) {
-                    for (field in fields) {
-                        result.add(
-                            QRCodeCollection(
-                                key = field.key,
-                                from = field.value[from] as Timestamp,
-                                to = (field.value[to] as Long).toInt(),
-                                valid = field.value[validStatus] as Boolean,
-                            )
-                        )
-                    }
-                }
             }
         }
         return result
@@ -226,7 +180,7 @@ class StationBasic : FireStore() {
     private val name = "name"
     private val price = "price"
     private val reserved = "reserved"
-    suspend fun basicGet(documentID: String):  StationBasic? {
+    suspend fun basicGet(documentID: String): StationBasic? {
         var result: StationBasic? = null
         fireStore.collection(collectionName).document(documentID).get().await().apply {
             if (get(name) != null) {
@@ -277,7 +231,7 @@ class StationAdvance : FireStore() {
     suspend fun advanceGet(documentID: String): StationAdvance? {
         var result: StationAdvance? = null
         fireStore.collection(collectionName).document(documentID).get().await().apply {
-            if(get(amenities) != null) {
+            if (get(amenities) != null) {
                 result = StationAdvance(
                     get(policies) as String,
                     get(amenities) as ArrayList<String>,
@@ -306,59 +260,6 @@ class StationAdvance : FireStore() {
                 openTime to stationAdvance.accessHours.open,
                 closeTime to stationAdvance.accessHours.close,
                 available to stationAdvance.accessHours.selectedDays
-            )
-        )
-
-        // await function this will block thread
-        fireStore.collection(collectionName).document(documentID).set(map, SetOptions.merge())
-            .addOnSuccessListener {
-                // call successfully perform
-                result = true
-            }.await()
-
-        // return result
-        return result
-    }
-}
-
-class Feedback : FireStore() {
-    private val collectionName = "feedback"
-    private val rating = "rating"
-    private val message = "message"
-
-    @Suppress("UNCHECKED_CAST")
-    suspend fun feedGet(documentID: String): ArrayList<FeedbackData> {
-        val result = ArrayList<FeedbackData>()
-        fireStore.collection(collectionName).document(documentID).get().await().let {
-            val feedbacks = it.data as? Map<String, Any>
-
-            if (feedbacks != null) {
-                for (feedback in feedbacks) {
-                    feedback.apply {
-                        val values = value as Map<String, Any>
-                        result.add(
-                            FeedbackData(
-                                key,
-                                (values[rating] as Double).toFloat(),
-                                values[message] as String
-                            )
-                        )
-                    }
-                }
-            }
-        }
-        return result
-    }
-
-    suspend fun feedSet(feedback: FeedbackData, documentID: String): Boolean {
-        // for success result
-        var result = false
-
-        // data mapping
-        val map = mapOf(
-            feedback.UID to mapOf(
-                rating to feedback.rating,
-                message to feedback.message
             )
         )
 

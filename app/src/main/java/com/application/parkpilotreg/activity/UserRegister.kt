@@ -5,6 +5,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import coil.load
@@ -45,8 +46,19 @@ class UserRegister : AppCompatActivity() {
             viewModel.photoPicker.showPhotoPicker()
         }
 
+        binding.editTextUserName.addTextChangedListener {
+            it.toString().apply {
+                if (viewModel.userProfile.value?.userName != this) {
+                    viewModel.isUnique(this)
+                } else {
+                    viewModel.isUnique.value = true
+                }
+            }
+        }
+
         binding.buttonSave.setOnClickListener {
             var isValid = true
+
             if (isInvalidName(binding.editTextFirstName.text.toString())) {
                 binding.editTextFirstName.error = "Field must contain [A-Z] [a-z] characters"
                 isValid = false
@@ -55,8 +67,13 @@ class UserRegister : AppCompatActivity() {
                 binding.editTextLastName.error = "Field must contain [A-Z] [a-z] characters"
                 isValid = false
             }
+            if (isInvalidUserName(binding.editTextUserName.text.toString())) {
+                binding.editTextUserName.error =
+                    "Field must contain [A-Z] [a-z] [0-9] [@_$] characters"
+                isValid = false
+            }
 
-            if (isValid) {
+            if (isValid && viewModel.isUnique.value == true) {
                 showProgress()
 
                 // uploading the user data
@@ -123,6 +140,12 @@ class UserRegister : AppCompatActivity() {
             }
         }
 
+        viewModel.isUnique.observe(this) { isUnique ->
+            if (!isUnique) {
+                binding.editTextUserName.error = "Already taken"
+            }
+        }
+
         // it will execute when user data uploaded successfully or failed to upload
         viewModel.isUploaded.observe(this) { isUploaded ->
             unShowProgress()
@@ -137,6 +160,11 @@ class UserRegister : AppCompatActivity() {
 
     private fun isInvalidName(name: String): Boolean {
         val pattern = Regex("[A-Za-z]+")
+        return !pattern.matches(name)
+    }
+
+    private fun isInvalidUserName(name: String): Boolean {
+        val pattern = Regex("[A-Za-z0-9@_$]+")
         return !pattern.matches(name)
     }
 
