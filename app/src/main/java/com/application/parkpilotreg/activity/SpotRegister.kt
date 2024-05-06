@@ -3,8 +3,6 @@ package com.application.parkpilotreg.activity
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
-import android.widget.EditText
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
@@ -12,9 +10,10 @@ import androidx.lifecycle.ViewModelProvider
 import coil.load
 import com.application.parkpilotreg.R
 import com.application.parkpilotreg.StationBasic
+import com.application.parkpilotreg.Utils
 import com.application.parkpilotreg.databinding.LocationPickerBinding
 import com.application.parkpilotreg.databinding.SpotRegisterBinding
-import com.application.parkpilotreg.viewModel.ParkRegisterViewModel
+import com.application.parkpilotreg.viewModel.SpotRegisterViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.osmdroid.util.GeoPoint
@@ -29,7 +28,7 @@ class SpotRegister : AppCompatActivity(R.layout.spot_register) {
         binding = SpotRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val imageViews = arrayOf<ImageView>(
+        val imageViews = arrayOf(
             binding.imageView1,
             binding.imageView2,
             binding.imageView3
@@ -42,7 +41,7 @@ class SpotRegister : AppCompatActivity(R.layout.spot_register) {
 
         var openFlag = false
 
-        val viewModel = ViewModelProvider(this)[ParkRegisterViewModel::class.java]
+        val viewModel = ViewModelProvider(this)[SpotRegisterViewModel::class.java]
 
         viewModel.loadActivity()
 
@@ -222,14 +221,10 @@ class SpotRegister : AppCompatActivity(R.layout.spot_register) {
         viewModel.isUploaded.observe(this) { isUploaded ->
             unShowProgress()
             if (isUploaded) {
-                Toast.makeText(
-                    this, "Information Save Successfully", Toast.LENGTH_SHORT
-                ).show()
+                Utils.truthToast(this, "Information Save Successfully")
                 finish()
             } else {
-                Toast.makeText(
-                    this, "Failed Save Information", Toast.LENGTH_SHORT
-                ).show()
+                Utils.errorToast(this, "Failed Save Information")
             }
         }
     }

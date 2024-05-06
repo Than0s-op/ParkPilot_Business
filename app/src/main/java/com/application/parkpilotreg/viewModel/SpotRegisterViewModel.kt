@@ -16,7 +16,6 @@ import com.application.parkpilotreg.module.OSM
 import com.application.parkpilotreg.module.PhotoPicker
 import com.application.parkpilotreg.module.TimePicker
 import com.application.parkpilotreg.module.firebase.Storage
-import com.application.parkpilotreg.module.firebase.database.StationBasic
 import com.google.firebase.firestore.GeoPoint as FS_GeoPoint
 import com.application.parkpilotreg.module.firebase.database.StationAdvance as FS_StationAdvance
 import com.application.parkpilotreg.module.firebase.database.StationBasic as FS_StationBasic
@@ -26,7 +25,7 @@ import org.osmdroid.util.GeoPoint as OSM_GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 
-class ParkRegisterViewModel : ViewModel() {
+class SpotRegisterViewModel : ViewModel() {
     private lateinit var mapViewOSM: OSM
 
     val timePicker = TimePicker("pick the time",TimePicker.CLOCK_12H)
