@@ -115,10 +115,22 @@ class SpotRegister : AppCompatActivity(R.layout.spot_register) {
 
         binding.buttonSubmit.setOnClickListener {
             var isValid = true
-            isValid = isValid(binding.editTextStationName) and isValid
-            isValid = isValid(binding.editTextStartingPrice) and isValid
-            isValid = isValid(binding.editTextPolicies) and isValid
-            isValid = isValid(binding.editTextReservedSpots) and isValid
+            if (isNameInvalid(binding.editTextStationName.text.toString())) {
+                binding.editTextStationName.error = "Must contain only [A-z] [0-9]"
+                isValid = false
+            }
+            if (isNameInvalid(binding.editTextPolicies.text.toString())) {
+                binding.editTextPolicies.error = "Must contain only [A-z] [0-9]"
+                isValid = false
+            }
+            if (isNumberInvalid(binding.editTextStartingPrice.text.toString())) {
+                binding.editTextStartingPrice.error = "Must contain only [0-9]"
+                isValid = false
+            }
+            if (isNumberInvalid(binding.editTextReservedSpots.text.toString())) {
+                binding.editTextStartingPrice.error = "Must contain only [0-9]"
+                isValid = false
+            }
 
             for (i in 0..<3) {
                 if (viewModel.imageViewsUri[i] == null) {
@@ -143,8 +155,6 @@ class SpotRegister : AppCompatActivity(R.layout.spot_register) {
                         getAccessTime()
                     )
                 )
-            } else {
-                Toast.makeText(this, "Fill the required information", Toast.LENGTH_LONG).show()
             }
         }
 
@@ -308,12 +318,14 @@ class SpotRegister : AppCompatActivity(R.layout.spot_register) {
         window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 
-    private fun isValid(editText: EditText): Boolean {
-        if (editText.text.isBlank()) {
-            editText.error = "Must not blank"
-            return false
-        }
-        return true
+    private fun isNameInvalid(name: String): Boolean {
+        val pattern = Regex("[A-Za-z0-9\\s\n]+")
+        return !pattern.matches(name)
+    }
+
+    private fun isNumberInvalid(number: String): Boolean {
+        val pattern = Regex("[0-9]+")
+        return !pattern.matches(number)
     }
 
     private fun loadDaysSwitch(list: List<String>) {
