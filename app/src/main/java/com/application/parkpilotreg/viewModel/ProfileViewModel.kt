@@ -4,12 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.application.parkpilotreg.R
 import com.application.parkpilotreg.User
-import com.application.parkpilotreg.activity.Authentication
+import com.application.parkpilotreg.Utils
 import com.application.parkpilotreg.activity.Main
 import com.application.parkpilotreg.activity.SpotRegister
 import com.application.parkpilotreg.activity.UserRegister
@@ -24,7 +23,7 @@ class ProfileViewModel : ViewModel() {
     fun logout(context: Context) {
         // sign out the user
         Firebase.auth.signOut()
-        Toast.makeText(context, "Logout Successfully", Toast.LENGTH_SHORT).show()
+        Utils.truthToast(context, "Logout Successfully")
 
         // creating the intent of Authentication activity
         val intent = Intent(context, Main::class.java).apply {

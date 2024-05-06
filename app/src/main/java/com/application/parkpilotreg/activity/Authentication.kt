@@ -4,20 +4,14 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.RelativeLayout
-import android.widget.ScrollView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.application.parkpilotreg.R
+import com.application.parkpilotreg.Utils
 import com.application.parkpilotreg.databinding.AuthenticationBinding
 import com.application.parkpilotreg.viewModel.AuthenticationViewModel
-import com.chaos.view.PinView
-import com.hbb20.CountryCodePicker
 
 
 class Authentication : AppCompatActivity() {
@@ -101,12 +95,12 @@ class Authentication : AppCompatActivity() {
                 }
 
                 // show successful toast
-                Toast.makeText(this, "OTP Send Successfully", Toast.LENGTH_SHORT).show()
+                Utils.truthToast(this, "OTP Send Successfully")
             }
             // if OTP not send successfully (error)
             else {
                 // show failed toast
-                Toast.makeText(this, "Failed to send OTP", Toast.LENGTH_SHORT).show()
+                Utils.errorToast(this, "Failed to send OTP")
             }
         }
 
@@ -125,7 +119,7 @@ class Authentication : AppCompatActivity() {
             // when Credential match (OTP is correct)
             if (isCorrect) {
                 // show successful toast
-                Toast.makeText(this, "Login Successfully", Toast.LENGTH_SHORT).show()
+                Utils.truthToast(this, "Login Successfully")
 
                 // start the next activity
                 viewModel.startNextActivity(this)
@@ -149,7 +143,7 @@ class Authentication : AppCompatActivity() {
                 binding.editTextPhoneNumber.setText("")
 
                 // show failed toast
-                Toast.makeText(this, "Invalid OTP", Toast.LENGTH_SHORT).show()
+                Utils.errorToast(this, "Invalid OTP")
             }
         }
 
@@ -175,7 +169,7 @@ class Authentication : AppCompatActivity() {
             }
             // otherwise
             else {
-                Toast.makeText(this, "Failed to Login", Toast.LENGTH_SHORT).show()
+                Utils.errorToast(this, "Failed to Login")
             }
         }
     }

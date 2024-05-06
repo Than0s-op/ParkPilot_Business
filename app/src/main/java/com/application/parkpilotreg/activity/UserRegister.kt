@@ -12,6 +12,7 @@ import coil.load
 import com.application.parkpilotreg.R
 import com.application.parkpilotreg.UserCollection
 import com.application.parkpilotreg.UserProfile
+import com.application.parkpilotreg.Utils
 import com.application.parkpilotreg.databinding.UserRegisterBinding
 import com.application.parkpilotreg.viewModel.UserRegisterViewModel
 
@@ -72,7 +73,7 @@ class UserRegister : AppCompatActivity() {
                     "Field must contain [A-Z] [a-z] [0-9] [@_$] characters"
                 isValid = false
             }
-            if(binding.editTextAge.text.toString() < "18"){
+            if (binding.editTextAge.text.toString() < "18") {
                 binding.editTextAge.error = "Age must be 18 or above"
                 isValid = false
             }
@@ -154,10 +155,10 @@ class UserRegister : AppCompatActivity() {
         viewModel.isUploaded.observe(this) { isUploaded ->
             unShowProgress()
             if (isUploaded) {
-                Toast.makeText(this, "Details save successfully", Toast.LENGTH_LONG).show()
+                Utils.truthToast(this, "Details save successfully")
                 finish()
             } else {
-                Toast.makeText(this, "Failed to save details", Toast.LENGTH_LONG).show()
+                Utils.errorToast(this, "Failed to save details")
             }
         }
     }
