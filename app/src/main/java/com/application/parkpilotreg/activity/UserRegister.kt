@@ -72,6 +72,10 @@ class UserRegister : AppCompatActivity() {
                     "Field must contain [A-Z] [a-z] [0-9] [@_$] characters"
                 isValid = false
             }
+            if(binding.editTextAge.text.toString() < "18"){
+                binding.editTextAge.error = "Age must be 18 or above"
+                isValid = false
+            }
 
             if (isValid && viewModel.isUnique.value == true) {
                 showProgress()
