@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     tools:context=".activity.SpotRegister">
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
@@ -79,8 +78,8 @@
                             android:id="@+id/editTextStationName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textCapSentences"
                             android:hint="Station Name"
+                            android:inputType="textCapSentences"
                             android:singleLine="true" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -100,9 +99,9 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextStartingPrice"
                             android:layout_width="match_parent"
-                            android:inputType="numberSigned"
                             android:layout_height="wrap_content"
-                            android:hint="Price" />
+                            android:hint="Price"
+                            android:inputType="numberSigned" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -133,7 +132,6 @@
                         style="@style/Widget.Material3.Button.ElevatedButton.Icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/md_theme_dark_onSecondaryContainer"
                         android:text="Pick"
                         app:layout_constraintBottom_toBottomOf="@+id/textInputLayoutAddress"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -155,8 +153,8 @@
                             android:id="@+id/editTextReservedSpots"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="number"
                             android:hint="Reserved Spots"
+                            android:inputType="number"
                             android:singleLine="true" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -350,8 +348,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="Save"
-                android:textColor="@color/textViewColor" />
+                android:text="Save" />
 
         </LinearLayout>
     </ScrollView>
