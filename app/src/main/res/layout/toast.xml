@@ -9,7 +9,8 @@
     android:divider="@drawable/empty_mid_divider"
     android:gravity="center"
     android:orientation="horizontal"
-    android:padding="5dp"
+    android:paddingVertical="5dp"
+    android:paddingHorizontal="10dp"
     android:showDividers="middle">
 
     <ImageView
