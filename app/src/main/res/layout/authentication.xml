@@ -115,14 +115,34 @@
                     android:id="@+id/divider2"
                     layout="@layout/divider_text" />
 
-                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                    android:id="@+id/buttonGoogleLogin"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="10dp"
-                    app:icon="@drawable/google_icon"
-                    app:iconTint="@null" />
+                    android:showDividers="middle"
+                    android:divider="@drawable/empty_mid_divider"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                        android:id="@+id/buttonGoogleLogin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="10dp"
+                        app:icon="@drawable/google_icon"
+                        app:iconTint="@null" />
+
+
+                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                        android:id="@+id/buttonAdminLogin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="10dp"
+                        app:icon="@drawable/outline_admin_panel_settings_24"
+                        app:iconTint="@null" />
+
+                </LinearLayout>
 
             </LinearLayout>
 

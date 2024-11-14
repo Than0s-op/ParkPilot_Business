@@ -89,9 +89,8 @@ class UserRegisterViewModel(context: Context) : ViewModel() {
             result = result and userAdvance.userSet(userCollection, User.UID)
 
             storage.userProfilePhotoPut(
-                context,
                 User.UID,
-                photoUrl ?: getAvatar(context, userProfile.userName)
+                photoUrl
             )
 
             result =

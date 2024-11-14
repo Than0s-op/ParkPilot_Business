@@ -14,7 +14,7 @@ data class UserCollection(
     val gender: String
 )
 
-data class UserProfile(val userName: String, val userPicture: Uri?=null)
+data class UserProfile(val userName: String, val userPicture: Uri? = null)
 data class QRCodeCollection(
     val key: String,
     val to: Int,
@@ -39,4 +39,12 @@ data class AccessHours(
     val selectedDays: List<String>
 )
 
-data class Feedback(val UID: String = User.UID, val rating: Float, val message: String)
+//data class Feedback(val UID: String = User.UID, val rating: Float, val message: String)
+
+data class FreeSpot(
+    val id: String,
+    val landMark: String,
+    val location: FirebaseGeoPoint,
+    val policies: String,
+    val images: List<Uri?>
+)

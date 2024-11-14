@@ -1,5 +1,6 @@
 package com.application.parkpilotreg.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -171,6 +172,11 @@ class Authentication : AppCompatActivity() {
             else {
                 Utils.errorToast(this, "Failed to Login")
             }
+        }
+
+        val buttonAdminLogin: Button = findViewById(R.id.buttonAdminLogin)
+        buttonAdminLogin.setOnClickListener {
+            startActivity(Intent(this, AdminLogin::class.java))
         }
     }
 

@@ -17,7 +17,7 @@ class Main : Activity() {
         if (Firebase.auth.currentUser?.uid != null) {
 
             // store UID in application layer
-            appUser.UID = Firebase.auth.currentUser?.uid!!
+//            appUser.UID = Firebase.auth.currentUser?.uid!!
 
             // start the registration activity
             startActivity(Intent(this@Main, Setting::class.java).apply {

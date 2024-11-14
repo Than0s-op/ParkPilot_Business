@@ -95,8 +95,35 @@
                 android:drawableStart="@drawable/universal_local_icon"
                 android:drawablePadding="30dp"
                 android:padding="15dp"
-                android:text="Spot Details"
-                android:textSize="20sp" />
+                android:text="Add Spot"
+                android:textSize="20sp"
+                android:visibility="gone" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textViewAddFreeSpot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawableStart="@drawable/universal_local_icon"
+                android:drawablePadding="30dp"
+                android:padding="15dp"
+                android:text="Add Free Spot"
+                android:textSize="20sp"
+                android:visibility="gone" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textViewFreeSpotList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawableStart="@drawable/universal_local_icon"
+                android:drawablePadding="30dp"
+                android:padding="15dp"
+                android:text="Free Spot List"
+                android:textSize="20sp"
+                android:visibility="gone" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/textViewLogout"
@@ -119,6 +146,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
+        android:visibility="gone"
         app:icon="@drawable/edit"
         app:layout_anchor="@id/appBarLayout"
         app:layout_anchorGravity="bottom|end" />

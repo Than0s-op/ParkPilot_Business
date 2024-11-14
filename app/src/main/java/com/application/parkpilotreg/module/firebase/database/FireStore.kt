@@ -3,6 +3,7 @@ package com.application.parkpilotreg.module.firebase.database
 import android.net.Uri
 import androidx.core.net.toUri
 import com.application.parkpilotreg.AccessHours
+import com.application.parkpilotreg.FreeSpot
 import com.application.parkpilotreg.QRCodeCollection
 import com.application.parkpilotreg.StationAdvance
 import com.application.parkpilotreg.StationBasic
@@ -10,10 +11,8 @@ import com.application.parkpilotreg.StationLocation
 import com.application.parkpilotreg.Time
 import com.application.parkpilotreg.UserCollection
 import com.application.parkpilotreg.UserProfile
+import com.application.parkpilotreg.module.firebase.Storage
 import com.google.firebase.Firebase
-import com.google.firebase.Timestamp
-import com.application.parkpilotreg.Feedback as FeedbackData
-import com.google.firebase.auth.userProfileChangeRequest
 import com.google.firebase.firestore.AggregateSource
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.SetOptions
@@ -67,11 +66,9 @@ class UserBasic : FireStore() {
     }
 
     suspend fun isUnique(userName: String): Boolean {
-        val aggregateCount = fireStore.collection(collectionName)
-            .whereEqualTo(this.userName, userName)
-            .count()
-            .get(AggregateSource.SERVER)
-            .await()
+        val aggregateCount =
+            fireStore.collection(collectionName).whereEqualTo(this.userName, userName).count()
+                .get(AggregateSource.SERVER).await()
         return aggregateCount.count == 0L
     }
 }
@@ -184,12 +181,11 @@ class StationBasic : FireStore() {
         var result: StationBasic? = null
         fireStore.collection(collectionName).document(documentID).get().await().apply {
             if (get(name) != null) {
-                result =
-                    StationBasic(
-                        get(name) as String,
-                        (get(price) as Long).toInt(),
-                        (get(reserved) as Long).toInt()
-                    )
+                result = StationBasic(
+                    get(name) as String,
+                    (get(price) as Long).toInt(),
+                    (get(reserved) as Long).toInt()
+                )
             }
         }
         return result
@@ -232,8 +228,7 @@ class StationAdvance : FireStore() {
         var result: StationAdvance? = null
         fireStore.collection(collectionName).document(documentID).get().await().apply {
             if (get(amenities) != null) {
-                result = StationAdvance(
-                    get(policies) as String,
+                result = StationAdvance(get(policies) as String,
                     get(amenities) as ArrayList<String>,
                     (get(accessHours) as Map<String, Any>).let {
                         AccessHours(
@@ -241,8 +236,7 @@ class StationAdvance : FireStore() {
                             it[closeTime] as String,
                             it[available] as List<String>
                         )
-                    }
-                )
+                    })
             }
         }
         return result
@@ -272,5 +266,77 @@ class StationAdvance : FireStore() {
 
         // return result
         return result
+    }
+}
+
+class FreeSpotStore : FireStore() {
+    private val storage by lazy { Storage() }
+    suspend fun set(spot: FreeSpot): Boolean {
+        var result = true
+        fireStore.collection(NAME).document(spot.id).set(
+            mapOf(
+                LAND_MARK to spot.landMark,
+                LOCATION to spot.location,
+                POLICIES to spot.policies,
+            )
+        ).addOnFailureListener {
+            result = false
+        }.await()
+        result = storage.setFreeSpotImages(
+            uid = spot.id,
+            uriList = spot.images
+        ) and result
+        return result
+    }
+
+    suspend fun get(documentId: String): FreeSpot {
+        val imageList = storage.getFreeSpotImages(documentId)
+        val document = fireStore.collection(NAME)
+            .document(documentId)
+            .get()
+            .await()
+            .data
+        return FreeSpot(
+            id = documentId,
+            landMark = document!![LAND_MARK].toString(),
+            location = document[LOCATION] as GeoPoint,
+            policies = document[POLICIES].toString(),
+            images = imageList
+        )
+    }
+
+    suspend fun remove(documentId: String): Boolean {
+        var result = true
+        result = result and storage.removeFreeSpotImages(documentId)
+
+        fireStore.collection(NAME).document(documentId).delete().addOnFailureListener {
+            result = false
+        }.await()
+        return result
+    }
+
+    suspend fun getAllSpots(): List<FreeSpot> {
+        val spotList = ArrayList<FreeSpot>()
+        val documents = fireStore.collection(NAME).get().await()
+        for (document in documents) {
+            spotList.add(
+                FreeSpot(
+                    id = document.id,
+                    landMark = document.data[LAND_MARK].toString(),
+                    location = document.data[LOCATION] as GeoPoint,
+                    policies = document.data[POLICIES].toString(),
+                    images = storage.getFreeSpotImages(document.id)
+                )
+            )
+        }
+        return spotList
+    }
+
+
+    companion object {
+        private const val NAME = "free_spots"
+        private const val LAND_MARK = "land_mark"
+        private const val LOCATION = "location"
+        private const val POLICIES = "policies"
     }
 }

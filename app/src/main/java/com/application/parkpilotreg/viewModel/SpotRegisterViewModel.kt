@@ -114,7 +114,7 @@ class SpotRegisterViewModel : ViewModel() {
 
             result = FS_StationAdvance().advanceSet(advance,User.UID) and result
 
-            result = Storage().parkSpotPhotoPut(context,User.UID, imageViewsUri) and result
+            result = Storage().parkSpotPhotoPut(User.UID, imageViewsUri) and result
 
             isUploaded.value = result
         }
