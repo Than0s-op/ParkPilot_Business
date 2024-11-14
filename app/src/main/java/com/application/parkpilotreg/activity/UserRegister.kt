@@ -176,6 +176,7 @@ class UserRegister : AppCompatActivity() {
     private fun showProgress() {
         // show progress bar
         binding.progressBar.visibility = View.VISIBLE
+        binding.buttonSave.visibility = View.GONE
 
         // to disable user interaction with ui
         window.setFlags(
@@ -187,6 +188,7 @@ class UserRegister : AppCompatActivity() {
     private fun unShowProgress() {
         // hide progress bar
         binding.progressBar.visibility = View.GONE
+        binding.buttonSave.visibility = View.VISIBLE
 
         // to enable user interaction with ui
         window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)

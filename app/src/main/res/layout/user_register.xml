@@ -6,25 +6,32 @@
     android:layout_height="match_parent"
     tools:context=".activity.UserRegister">
 
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/progressBar"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/progressBarColor"
-        android:elevation="25dp"
-        android:indeterminate="true"
-        android:padding="20dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            app:navigationIcon="@drawable/baseline_arrow_back_24"
+            app:navigationIconTint="@color/white"
+            app:title="Edit Profile"
+            app:titleTextColor="@color/white" />
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,7 +46,7 @@
             <!-- first section user profile and name -->
 
             <com.google.android.material.card.MaterialCardView
-                style="?attr/materialCardViewFilledStyle"
+                style="?attr/materialCardViewElevatedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:contentPadding="15dp">
@@ -67,7 +74,6 @@
                     </androidx.cardview.widget.CardView>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        style="?attr/textInputFilledStyle"
                         android:layout_width="170dp"
                         android:layout_height="wrap_content"
                         app:startIconDrawable="@drawable/person_icon">
@@ -89,7 +95,7 @@
             <!-- second section user personal details -->
 
             <com.google.android.material.card.MaterialCardView
-                style="?attr/materialCardViewFilledStyle"
+                style="?attr/materialCardViewElevatedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -224,6 +230,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Save" />
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:indeterminate="true"
+                android:visibility="gone"
+                app:indicatorColor="@color/black" />
 
         </LinearLayout>
 
