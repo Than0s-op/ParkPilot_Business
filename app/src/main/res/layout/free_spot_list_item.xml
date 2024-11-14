@@ -25,4 +25,13 @@
         android:layout_gravity="center_vertical|end"
         android:text="Delete" />
 
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progress_circular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end"
+        android:visibility="gone"
+        android:indeterminate="true"
+        app:indicatorColor="@color/black" />
+
 </com.google.android.material.card.MaterialCardView>

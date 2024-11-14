@@ -31,7 +31,10 @@ class AddFreeSpot : AppCompatActivity() {
         viewModel.init(this, bindingLocationPicker.mapView)
 
         intent.getStringExtra("id")?.let {
-            viewModel.getFreeSpot(it)
+            showShimmer()
+            viewModel.getFreeSpot(it, onComplete = {
+                hideShimmer()
+            })
         }
 
         binding.topAppBar.setNavigationOnClickListener {
@@ -169,5 +172,15 @@ class AddFreeSpot : AppCompatActivity() {
     private fun hideProgressBar() {
         binding.progressBar.visibility = View.GONE
         window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+    }
+
+    private fun showShimmer() {
+        binding.shimmerLayout.root.visibility = View.VISIBLE
+        binding.scrollView.visibility = View.GONE
+    }
+
+    private fun hideShimmer() {
+        binding.shimmerLayout.root.visibility = View.GONE
+        binding.scrollView.visibility = View.VISIBLE
     }
 }

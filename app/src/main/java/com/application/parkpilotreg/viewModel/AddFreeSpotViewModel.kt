@@ -30,9 +30,11 @@ class AddFreeSpotViewModel : ViewModel() {
             marker.position = it
         }
     }
-    fun getFreeSpot(documentId:String){
+
+    fun getFreeSpot(documentId: String, onComplete: () -> Unit) {
         viewModelScope.launch {
             freeSpot.value = freeSpotStore.get(documentId)
+            onComplete()
         }
     }
 
