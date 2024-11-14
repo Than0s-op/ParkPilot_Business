@@ -1,6 +1,7 @@
 package com.application.parkpilotreg.activity
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
@@ -20,9 +21,15 @@ class FreeSpotList : AppCompatActivity() {
         setContentView(binding.root)
         viewModel = FreeSpotListViewModel()
         binding.freeSpotList.layoutManager = LinearLayoutManager(this)
-
+        viewModel.getFreeSpotList({
+            hideShimmer()
+        })
         viewModel.freeSpotList.observe(this) {
             loadFreeSpotList(it)
+        }
+
+        binding.topAppBar.setNavigationOnClickListener {
+            finish()
         }
 
         binding.searchView.setOnQueryTextListener(object : OnQueryTextListener {
@@ -49,7 +56,10 @@ class FreeSpotList : AppCompatActivity() {
                 viewModel.removeSpot(documentId,
                     onSuccess = {
                         Toast.makeText(this, "removed Successfully", Toast.LENGTH_SHORT).show()
-                        viewModel.getFreeSpotList()
+                        showShimmer()
+                        viewModel.getFreeSpotList({
+                            hideShimmer()
+                        })
                     },
                     onFailure = {
                         Toast.makeText(this, "Failed to remove", Toast.LENGTH_SHORT).show()
@@ -57,5 +67,15 @@ class FreeSpotList : AppCompatActivity() {
                 )
             }
         )
+    }
+
+    private fun showShimmer() {
+        binding.shimmerScrollView.visibility = View.VISIBLE
+        binding.freeSpotList.visibility = View.GONE
+    }
+
+    private fun hideShimmer() {
+        binding.shimmerScrollView.visibility = View.GONE
+        binding.freeSpotList.visibility = View.VISIBLE
     }
 }

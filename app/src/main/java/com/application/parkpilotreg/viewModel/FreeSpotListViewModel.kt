@@ -11,13 +11,12 @@ class FreeSpotListViewModel : ViewModel() {
     private val freeSpotStore = FreeSpotStore()
     val freeSpotList = MutableLiveData<List<FreeSpot>>()
 
-    init {
-        getFreeSpotList()
-    }
-
-    fun getFreeSpotList() {
+    fun getFreeSpotList(
+        onComplete: () -> Unit
+    ) {
         viewModelScope.launch {
             freeSpotList.value = freeSpotStore.getAllSpots()
+            onComplete()
         }
     }
 
