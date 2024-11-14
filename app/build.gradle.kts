@@ -67,17 +67,20 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
 
     // add the dependency for the Google Play services library and specify its version (google sign in)
-    implementation("com.google.android.gms:play-services-auth:21.2.0")
+    implementation(libs.play.services.auth)
 
     // openStreetMap
-    implementation("org.osmdroid:osmdroid-android:6.1.18")
+    implementation(libs.osmdroid.android)
 
     // image caching and downloading (Co-routine image loader)
-    implementation("io.coil-kt:coil:2.5.0")
+    implementation("io.coil-kt:coil:2.7.0")
 
     // fused location provider to get last known location
-    implementation("com.google.android.gms:play-services-location:21.3.0")
+    implementation(libs.play.services.location)
 
     // avatar image generator
-    implementation("com.github.amoskorir:avatarimagegenerator:1.5.0")
+    implementation(libs.avatarimagegenerator)
+
+    // shimmer
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
 }

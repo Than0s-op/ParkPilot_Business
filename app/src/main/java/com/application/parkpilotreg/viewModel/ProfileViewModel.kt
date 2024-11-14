@@ -43,10 +43,17 @@ class ProfileViewModel : ViewModel() {
         context.startActivity(Intent(context, SpotRegister::class.java))
     }
 
-    fun loadProfile(context: Context, profileImage: ImageView, profileName: TextView) {
+    fun loadProfile(
+        context: Context,
+        profileImage: ImageView,
+        profileName: TextView,
+        onComplete: () -> Unit
+    ) {
         Firebase.auth.currentUser?.let {
             viewModelScope.launch {
-                Storage().userProfilePhotoGet(User.UID)?.let {
+                val image = Storage().userProfilePhotoGet(User.UID)
+                val name = UserBasic().getProfile(User.UID)?.userName
+                image?.let {
                     profileImage.setImageDrawable(
                         PhotoLoader().getImage(
                             context,
@@ -55,9 +62,10 @@ class ProfileViewModel : ViewModel() {
                         ).drawable
                     )
                 }
-                UserBasic().getProfile(User.UID)?.userName?.let {
+                name?.let {
                     profileName.text = it
                 }
+                onComplete()
             }
         }
     }

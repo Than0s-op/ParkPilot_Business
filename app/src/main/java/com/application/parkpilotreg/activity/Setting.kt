@@ -19,7 +19,16 @@ class Setting : AppCompatActivity() {
 
         val viewModel = ProfileViewModel()
 
-        viewModel.loadProfile(this, binding.imageViewProfilePicture, binding.textViewUserName)
+        viewModel.loadProfile(
+            context = this,
+            profileImage = binding.imageViewProfilePicture,
+            profileName = binding.textViewUserName,
+            onComplete = {
+                binding.shimmerLayout.visibility = View.GONE
+                binding.imageViewProfilePicture.visibility = View.VISIBLE
+                binding.textViewUserName.visibility = View.VISIBLE
+            }
+        )
 
         binding.buttonEditProfile.setOnClickListener {
             viewModel.personalInformation(this)
