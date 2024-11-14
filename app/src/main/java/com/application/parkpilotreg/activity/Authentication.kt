@@ -106,7 +106,7 @@ class Authentication : AppCompatActivity() {
         }
 
         binding.buttonOTPVerification.setOnClickListener { _ ->
-            showProgress()
+            verifyOtpShowProcess()
 
             // pass user entered OTP to check entered OTP correct or not
             viewModel.verifyPhoneNumberWithCode(
@@ -116,7 +116,7 @@ class Authentication : AppCompatActivity() {
 
         // It will be react when we get result of the "verifyPhoneNumberWithCode" function call
         viewModel.verifyPhoneNumberWithCodeResult.observe(this) { isCorrect ->
-            unShowProgress()
+            verifyOtpHideProcess()
             // when Credential match (OTP is correct)
             if (isCorrect) {
                 // show successful toast
@@ -198,6 +198,21 @@ class Authentication : AppCompatActivity() {
         binding.buttonVerifyPhoneNumber.visibility = View.VISIBLE
 
         // to enable user interaction with ui
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+    }
+
+    private fun verifyOtpShowProcess() {
+        binding.progressBarOtpVerification.visibility = View.VISIBLE
+        binding.buttonOTPVerification.visibility = View.GONE
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        )
+    }
+
+    private fun verifyOtpHideProcess() {
+        binding.progressBarOtpVerification.visibility = View.GONE
+        binding.buttonOTPVerification.visibility = View.VISIBLE
         window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 
