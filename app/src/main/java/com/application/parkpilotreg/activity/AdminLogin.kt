@@ -2,6 +2,8 @@ package com.application.parkpilotreg.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
@@ -10,9 +12,6 @@ import com.application.parkpilotreg.User
 import com.application.parkpilotreg.Utils
 import com.application.parkpilotreg.databinding.AdminLoginPanelBinding
 import com.application.parkpilotreg.viewModel.AdminLoginViewModel
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
-import kotlinx.coroutines.tasks.await
 
 
 class AdminLogin : AppCompatActivity() {
@@ -29,7 +28,10 @@ class AdminLogin : AppCompatActivity() {
             }
         })[AdminLoginViewModel::class.java]
 
+        binding.divider1.dividerTextView.text = "Admin Login"
+
         binding.buttonLogin.setOnClickListener {
+            showProgress()
             viewModel.signIn(
                 email = binding.editTextEmail.text.toString(),
                 password = binding.editTextPassword.text.toString(),
@@ -45,9 +47,24 @@ class AdminLogin : AppCompatActivity() {
                     ).show()
                 },
                 onComplete = {
-
+                    hideProgress()
                 }
             )
         }
+    }
+
+    private fun showProgress() {
+        binding.progressBar.visibility = View.VISIBLE
+        binding.buttonLogin.visibility = View.GONE
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        )
+    }
+
+    private fun hideProgress() {
+        binding.progressBar.visibility = View.GONE
+        binding.buttonLogin.visibility = View.VISIBLE
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 }
