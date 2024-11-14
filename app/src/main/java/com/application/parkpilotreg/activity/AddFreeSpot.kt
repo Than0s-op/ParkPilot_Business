@@ -1,6 +1,8 @@
 package com.application.parkpilotreg.activity
 
 import android.os.Bundle
+import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import coil.load
@@ -30,6 +32,10 @@ class AddFreeSpot : AppCompatActivity() {
 
         intent.getStringExtra("id")?.let {
             viewModel.getFreeSpot(it)
+        }
+
+        binding.topAppBar.setNavigationOnClickListener {
+            finish()
         }
 
         val imageViews = arrayOf(
@@ -70,6 +76,7 @@ class AddFreeSpot : AppCompatActivity() {
         }
 
         binding.buttonAdd.setOnClickListener {
+            showProgressBar()
             viewModel.set(
                 spot = FreeSpot(
                     id = id ?: System.currentTimeMillis().toString(),
@@ -88,12 +95,12 @@ class AddFreeSpot : AppCompatActivity() {
                     Toast.makeText(this, "Failed", Toast.LENGTH_LONG).show()
                 },
                 onComplete = {
-
+                    hideProgressBar()
                 }
             )
         }
 
-        binding.editTextAddress.setOnClickListener {
+        binding.buttonLocationPick.setOnClickListener {
             dialogBox.show()
         }
 
@@ -149,5 +156,18 @@ class AddFreeSpot : AppCompatActivity() {
             // it will set current location in mapView
             viewModel.getCurrentLocation(this)
         }
+    }
+
+    private fun showProgressBar() {
+        binding.progressBar.visibility = View.VISIBLE
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        )
+    }
+
+    private fun hideProgressBar() {
+        binding.progressBar.visibility = View.GONE
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 }
