@@ -46,14 +46,18 @@ class ProfileViewModel : ViewModel() {
     fun loadProfile(context: Context, profileImage: ImageView, profileName: TextView) {
         Firebase.auth.currentUser?.let {
             viewModelScope.launch {
-                profileImage.setImageDrawable(
-                    PhotoLoader().getImage(
-                        context,
-                        Storage().userProfilePhotoGet(User.UID) ?: R.drawable.person_icon,
-                        false
-                    ).drawable
-                )
-                profileName.text = UserBasic().getProfile(User.UID)?.userName ?: "User"
+                Storage().userProfilePhotoGet(User.UID)?.let {
+                    profileImage.setImageDrawable(
+                        PhotoLoader().getImage(
+                            context,
+                            it,
+                            false
+                        ).drawable
+                    )
+                }
+                UserBasic().getProfile(User.UID)?.userName?.let {
+                    profileName.text = it
+                }
             }
         }
     }

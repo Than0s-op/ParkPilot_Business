@@ -23,7 +23,7 @@
                 android:layout_height="250dp"
                 android:background="@color/black"
                 android:scaleType="centerCrop"
-                android:src="@drawable/anonymous_user_image" />
+                android:src="@drawable/car_park" />
 
             <TextView
                 android:id="@+id/textViewUserName"
