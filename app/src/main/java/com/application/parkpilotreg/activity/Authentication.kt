@@ -183,6 +183,7 @@ class Authentication : AppCompatActivity() {
     private fun showProgress() {
         // show progress bar
         binding.progressBar.visibility = View.VISIBLE
+        binding.buttonVerifyPhoneNumber.visibility = View.GONE
 
         // to disable user interaction with ui
         window.setFlags(
@@ -194,6 +195,7 @@ class Authentication : AppCompatActivity() {
     private fun unShowProgress() {
         // hide progress bar
         binding.progressBar.visibility = View.GONE
+        binding.buttonVerifyPhoneNumber.visibility = View.VISIBLE
 
         // to enable user interaction with ui
         window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)

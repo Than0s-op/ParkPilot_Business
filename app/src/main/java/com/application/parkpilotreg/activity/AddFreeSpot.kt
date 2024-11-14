@@ -163,6 +163,7 @@ class AddFreeSpot : AppCompatActivity() {
 
     private fun showProgressBar() {
         binding.progressBar.visibility = View.VISIBLE
+        binding.buttonAdd.visibility = View.GONE
         window.setFlags(
             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
@@ -171,6 +172,7 @@ class AddFreeSpot : AppCompatActivity() {
 
     private fun hideProgressBar() {
         binding.progressBar.visibility = View.GONE
+        binding.buttonAdd.visibility = View.VISIBLE
         window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 
