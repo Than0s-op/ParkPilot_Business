@@ -84,84 +84,125 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:divider="@drawable/line_divider"
+            android:divider="@drawable/empty_mid_divider"
             android:orientation="vertical"
             android:paddingHorizontal="10dp"
-            android:showDividers="middle">
+            android:clipToPadding="true"
+            android:showDividers="middle|end|beginning">
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.google.android.material.card.MaterialCardView
+                style="?attr/materialCardViewElevatedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
                 android:clickable="true"
-                android:drawableStart="@drawable/help_icon"
-                android:drawablePadding="30dp"
-                android:padding="15dp"
-                android:text="Help"
-                android:textSize="20sp" />
+                app:contentPadding="8dp">
 
-            <com.google.android.material.textview.MaterialTextView
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/help_icon"
+                    android:drawablePadding="30dp"
+                    android:padding="15dp"
+                    android:text="Help"
+                    android:textSize="20sp" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                style="?attr/materialCardViewElevatedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
                 android:clickable="true"
-                android:drawableStart="@drawable/quiz_icon"
-                android:drawablePadding="30dp"
-                android:padding="15dp"
-                android:text="FAQ"
-                android:textSize="20sp" />
+                app:contentPadding="8dp">
 
-            <com.google.android.material.textview.MaterialTextView
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/quiz_icon"
+                    android:drawablePadding="30dp"
+                    android:padding="15dp"
+                    android:text="FAQ"
+                    android:textSize="20sp" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/textViewSpotDetails"
+                style="?attr/materialCardViewElevatedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
                 android:clickable="true"
-                android:drawableStart="@drawable/universal_local_icon"
-                android:drawablePadding="30dp"
-                android:padding="15dp"
-                android:text="Add Spot"
-                android:textSize="20sp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                app:contentPadding="8dp">
 
-            <com.google.android.material.textview.MaterialTextView
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/baseline_add_24"
+                    android:drawablePadding="30dp"
+                    android:padding="15dp"
+                    android:text="Add Spot"
+                    android:textSize="20sp" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/textViewAddFreeSpot"
+                style="?attr/materialCardViewElevatedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
                 android:clickable="true"
-                android:drawableStart="@drawable/universal_local_icon"
-                android:drawablePadding="30dp"
-                android:padding="15dp"
-                android:text="Add Free Spot"
-                android:textSize="20sp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                app:contentPadding="8dp">
 
-            <com.google.android.material.textview.MaterialTextView
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/baseline_add_24"
+                    android:drawablePadding="30dp"
+                    android:padding="15dp"
+                    android:text="Add Spot"
+                    android:textSize="20sp" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/textViewFreeSpotList"
+                style="?attr/materialCardViewElevatedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
                 android:clickable="true"
-                android:drawableStart="@drawable/universal_local_icon"
-                android:drawablePadding="30dp"
-                android:padding="15dp"
-                android:text="Free Spot List"
-                android:textSize="20sp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                app:contentPadding="8dp">
 
-            <com.google.android.material.textview.MaterialTextView
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/baseline_list_24"
+                    android:drawablePadding="30dp"
+                    android:padding="15dp"
+                    android:text="Spots List"
+                    android:textSize="20sp" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/textViewLogout"
+                style="?attr/materialCardViewElevatedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
                 android:clickable="true"
-                android:drawableStart="@drawable/logout_icon"
-                android:drawablePadding="30dp"
-                android:padding="15dp"
-                android:text="Logout"
-                android:textSize="20sp" />
+                app:contentPadding="8dp">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/logout_icon"
+                    android:drawablePadding="30dp"
+                    android:padding="15dp"
+                    android:text="Logout"
+                    android:textSize="20sp" />
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
 
