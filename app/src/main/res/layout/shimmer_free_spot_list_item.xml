@@ -20,7 +20,7 @@
             android:layout_gravity="center_vertical"
             android:width="150dp"
             android:height="32sp"
-            android:background="#E0E0E0"
+            android:background="@drawable/shimmer_background"
             android:hint=" " />
 
         <com.google.android.material.button.MaterialButton
