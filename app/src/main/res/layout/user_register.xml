@@ -36,210 +36,223 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:divider="@drawable/empty_tall_divider"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:padding="15dp"
-            android:showDividers="middle">
+            android:orientation="vertical">
 
-            <!-- first section user profile and name -->
+            <include
+                android:id="@+id/shimmerLayout"
+                layout="@layout/shimmer_user_registration"
+                android:visibility="visible" />
 
-            <com.google.android.material.card.MaterialCardView
-                style="?attr/materialCardViewElevatedStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:contentPadding="15dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:divider="@drawable/empty_mid_divider"
-                    android:gravity="center"
-                    android:showDividers="middle">
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        app:cardCornerRadius="240dp">
-
-                        <ImageView
-                            android:id="@+id/imageViewProfilePicture"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/person_icon" />
-
-                    </androidx.cardview.widget.CardView>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="170dp"
-                        android:layout_height="wrap_content"
-                        app:startIconDrawable="@drawable/person_icon">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/editTextUserName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:hint="User Name"
-                            android:inputType="textCapSentences"
-                            android:singleLine="true" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-
-            <!-- second section user personal details -->
-
-            <com.google.android.material.card.MaterialCardView
-                style="?attr/materialCardViewElevatedStyle"
+            <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:divider="@drawable/empty_tall_divider"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="15dp"
+                android:showDividers="middle"
+                android:visibility="gone">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
+                <!-- first section user profile and name -->
+
+                <com.google.android.material.card.MaterialCardView
+                    style="?attr/materialCardViewElevatedStyle"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="15dp">
+                    app:contentPadding="15dp">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textInputLayoutFirstName"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="5dp"
-                        app:layout_constraintEnd_toStartOf="@+id/textInputLayoutLastName"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintHorizontal_weight="1"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/editTextFirstName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="First Name"
-                            android:inputType="textCapSentences"
-                            android:singleLine="true" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textInputLayoutLastName"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintHorizontal_weight="1"
-                        app:layout_constraintStart_toEndOf="@+id/textInputLayoutFirstName"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/editTextLastName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Last Name"
-                            android:inputType="textCapSentences"
-                            android:singleLine="true" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textInputLayoutBirthDate"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="5dp"
-                        app:layout_constraintEnd_toStartOf="@+id/textInputLayoutAge"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintHorizontal_weight="0.7"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/textInputLayoutFirstName"
-                        app:startIconDrawable="@drawable/date_range_icon">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/editTextBirthDate"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:focusable="false"
-                            android:hint="Birth Date"
-                            android:inputType="textEmailAddress"
-                            android:singleLine="true" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textInputLayoutAge"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_weight="0.3"
-                        app:layout_constraintStart_toEndOf="@+id/textInputLayoutBirthDate"
-                        app:layout_constraintTop_toBottomOf="@id/textInputLayoutLastName"
-                        app:startIconDrawable="@drawable/age">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/editTextAge"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:enabled="false"
-                            android:hint="Age"
-                            android:inputType="textEmailAddress"
-                            android:singleLine="true" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <RadioGroup
-                        android:id="@+id/radioGroupGender"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="15dp"
-                        android:checkedButton="@+id/radioButtonFemale"
                         android:divider="@drawable/empty_mid_divider"
-                        android:orientation="horizontal"
-                        android:showDividers="middle"
-                        app:layout_constraintEnd_toEndOf="@+id/textInputLayoutAge"
-                        app:layout_constraintStart_toStartOf="@+id/textInputLayoutBirthDate"
-                        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutBirthDate">
+                        android:gravity="center"
+                        android:showDividers="middle">
 
-                        <RadioButton
-                            android:id="@+id/radioButtonFemale"
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            app:cardCornerRadius="240dp">
+
+                            <ImageView
+                                android:id="@+id/imageViewProfilePicture"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/person_icon" />
+
+                        </androidx.cardview.widget.CardView>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="170dp"
+                            android:layout_height="wrap_content"
+                            app:startIconDrawable="@drawable/person_icon">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/editTextUserName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:hint="User Name"
+                                android:inputType="textCapSentences"
+                                android:singleLine="true" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+
+                <!-- second section user personal details -->
+
+                <com.google.android.material.card.MaterialCardView
+                    style="?attr/materialCardViewElevatedStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="15dp">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/textInputLayoutFirstName"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            app:layout_constraintEnd_toStartOf="@+id/textInputLayoutLastName"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintHorizontal_weight="1"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/editTextFirstName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="First Name"
+                                android:inputType="textCapSentences"
+                                android:singleLine="true" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/textInputLayoutLastName"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintHorizontal_weight="1"
+                            app:layout_constraintStart_toEndOf="@+id/textInputLayoutFirstName"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/editTextLastName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Last Name"
+                                android:inputType="textCapSentences"
+                                android:singleLine="true" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/textInputLayoutBirthDate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="5dp"
+                            app:layout_constraintEnd_toStartOf="@+id/textInputLayoutAge"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintHorizontal_weight="0.7"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/textInputLayoutFirstName"
+                            app:startIconDrawable="@drawable/date_range_icon">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/editTextBirthDate"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:focusable="false"
+                                android:hint="Birth Date"
+                                android:inputType="textEmailAddress"
+                                android:singleLine="true" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/textInputLayoutAge"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_weight="0.3"
+                            app:layout_constraintStart_toEndOf="@+id/textInputLayoutBirthDate"
+                            app:layout_constraintTop_toBottomOf="@id/textInputLayoutLastName"
+                            app:startIconDrawable="@drawable/age">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/editTextAge"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:enabled="false"
+                                android:hint="Age"
+                                android:inputType="textEmailAddress"
+                                android:singleLine="true" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <RadioGroup
+                            android:id="@+id/radioGroupGender"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Female" />
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="15dp"
+                            android:checkedButton="@+id/radioButtonFemale"
+                            android:divider="@drawable/empty_mid_divider"
+                            android:orientation="horizontal"
+                            android:showDividers="middle"
+                            app:layout_constraintEnd_toEndOf="@+id/textInputLayoutAge"
+                            app:layout_constraintStart_toStartOf="@+id/textInputLayoutBirthDate"
+                            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutBirthDate">
 
-                        <RadioButton
-                            android:id="@+id/radioButtonMale"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Male" />
+                            <RadioButton
+                                android:id="@+id/radioButtonFemale"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Female" />
 
-                    </RadioGroup>
+                            <RadioButton
+                                android:id="@+id/radioButtonMale"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Male" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        </RadioGroup>
 
-            </com.google.android.material.card.MaterialCardView>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- third section user contact details -->
+                </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/buttonSave"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Save" />
+                <!-- third section user contact details -->
 
-            <com.google.android.material.progressindicator.CircularProgressIndicator
-                android:id="@+id/progressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:indeterminate="true"
-                android:visibility="gone"
-                app:indicatorColor="@color/black" />
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    android:id="@+id/buttonSave"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Save" />
 
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:indeterminate="true"
+                    android:visibility="gone"
+                    app:indicatorColor="@color/black" />
+
+            </LinearLayout>
         </LinearLayout>
 
     </ScrollView>

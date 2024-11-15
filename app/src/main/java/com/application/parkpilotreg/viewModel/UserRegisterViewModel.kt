@@ -51,13 +51,13 @@ class UserRegisterViewModel(context: Context) : ViewModel() {
     val photoPicker = PhotoPicker(context)
 
 
-    // it will get user detail from user collection
-    fun getUserDetails() {
-        viewModelScope.launch {
-            // call to fireStore
-            userInformation.value = userAdvance.userGet(User.UID)
-        }
-    }
+//    // it will get user detail from user collection
+//    fun getUserDetails() {
+//        viewModelScope.launch {
+//            // call to fireStore
+//
+//        }
+//    }
 
     fun isUnique(userName: String) {
         viewModelScope.launch {
@@ -65,8 +65,9 @@ class UserRegisterViewModel(context: Context) : ViewModel() {
         }
     }
 
-    fun getProfileDetails() {
+    fun getProfileDetails(onComplete: () -> Unit) {
         viewModelScope.launch {
+            userInformation.value = userAdvance.userGet(User.UID)
             val result = userBasic.getProfile(User.UID)
             if (result != null) {
                 userProfile.value =
@@ -79,6 +80,7 @@ class UserRegisterViewModel(context: Context) : ViewModel() {
                     )
                 } else userProfile.value = null
             }
+            onComplete()
         }
     }
 

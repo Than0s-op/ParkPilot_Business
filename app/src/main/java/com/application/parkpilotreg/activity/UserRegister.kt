@@ -32,10 +32,13 @@ class UserRegister : AppCompatActivity() {
             }
         })[UserRegisterViewModel::class.java]
 
-        viewModel.getProfileDetails()
+        viewModel.getProfileDetails({
+            binding.shimmerLayout.shimmerLayout.visibility = View.GONE
+            binding.linearLayout.visibility = View.VISIBLE
+        })
 
         // get user details from user collection
-        viewModel.getUserDetails()
+//        viewModel.getUserDetails()
 
         binding.editTextBirthDate.setOnClickListener {
             // start and end dates format should be yyyy-mm-dd (modify this function)
@@ -55,6 +58,10 @@ class UserRegister : AppCompatActivity() {
                     viewModel.isUnique.value = true
                 }
             }
+        }
+
+        binding.topAppBar.setNavigationOnClickListener {
+            finish()
         }
 
         binding.buttonSave.setOnClickListener {
