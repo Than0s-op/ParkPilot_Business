@@ -64,6 +64,10 @@ class SpotRegister : AppCompatActivity(R.layout.spot_register) {
             viewModel.timePicker(supportFragmentManager, "close")
         }
 
+        binding.topAppBar.setNavigationOnClickListener {
+            finish()
+        }
+
         var flagImageView1 = false
         imageViews[0].setOnClickListener {
             if (viewModel.imageViewsUri[0] != null) {
@@ -293,6 +297,7 @@ class SpotRegister : AppCompatActivity(R.layout.spot_register) {
     private fun showProgress() {
         // show progress bar
         binding.progressBar.visibility = View.VISIBLE
+        binding.buttonSubmit.visibility = View.GONE
 
         // to disable user interaction with ui
         window.setFlags(
@@ -304,6 +309,7 @@ class SpotRegister : AppCompatActivity(R.layout.spot_register) {
     private fun unShowProgress() {
         // hide progress bar
         binding.progressBar.visibility = View.GONE
+        binding.buttonSubmit.visibility = View.VISIBLE
 
         // to enable user interaction with ui
         window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)

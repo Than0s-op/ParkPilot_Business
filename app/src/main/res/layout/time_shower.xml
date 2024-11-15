@@ -6,7 +6,6 @@
     android:layout_gravity="center_horizontal">
 
     <com.google.android.material.textfield.TextInputLayout
-        style="?attr/textInputFilledStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="open time"
@@ -28,7 +27,6 @@
         android:layout_gravity="center_vertical" />
 
     <com.google.android.material.textfield.TextInputLayout
-        style="?attr/textInputFilledStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="close time"

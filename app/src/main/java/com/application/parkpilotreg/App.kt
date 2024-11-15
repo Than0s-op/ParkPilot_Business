@@ -29,7 +29,7 @@ class App : Application() {
 object User {
     // if UID is null it means user not login yet
     val UID get() = Firebase.auth.uid!!
-    val isAdmin get() = Firebase.auth.currentUser?.email != null
+    val isAdmin get() = Firebase.auth.currentUser?.email == "thanosop150@gmail.com"
 }
 
 object Utils {
