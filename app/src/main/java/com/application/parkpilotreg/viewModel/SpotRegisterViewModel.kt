@@ -28,18 +28,18 @@ import org.osmdroid.views.overlay.Marker
 class SpotRegisterViewModel : ViewModel() {
     private lateinit var mapViewOSM: OSM
 
-    val timePicker = TimePicker("pick the time",TimePicker.CLOCK_12H)
-    lateinit var photoPicker:PhotoPicker
-    val imageViewsUri = arrayOf<Uri?>(null,null,null)
+    val timePicker = TimePicker("pick the time", TimePicker.CLOCK_12H)
+    lateinit var photoPicker: PhotoPicker
+    val imageViewsUri = arrayOf<Uri?>(null, null, null)
     val liveDataStationBasic = MutableLiveData<DC_StationBasic?>()
     val liveDataStationAdvance = MutableLiveData<DC_StationAdvance?>()
-    val liveDataStationLocation = MutableLiveData<FS_GeoPoint?> ()
+    val liveDataStationLocation = MutableLiveData<FS_GeoPoint?>()
     val isUploaded = MutableLiveData<Boolean>()
-    lateinit var marker:Marker
+    lateinit var marker: Marker
     val liveDataImages = MutableLiveData<List<Uri>>()
 
 
-    fun init(context:Context,mapView:MapView){
+    fun init(context: Context, mapView: MapView) {
         mapViewOSM = OSM(mapView)
         photoPicker = PhotoPicker(context)
         marker = mapViewOSM.addMarker(mapViewOSM.center)
@@ -48,22 +48,23 @@ class SpotRegisterViewModel : ViewModel() {
         }
     }
 
-    fun timePicker(manager: FragmentManager, tag:String?){
-            timePicker.showTimePicker(manager,tag)
+    fun timePicker(manager: FragmentManager, tag: String?) {
+        timePicker.showTimePicker(manager, tag)
     }
 
-    fun loadActivity(){
+    fun loadActivity(onComplete: () -> Unit) {
         viewModelScope.launch {
             liveDataStationBasic.value = FS_StationBasic().basicGet(User.UID)
             liveDataStationAdvance.value = FS_StationAdvance().advanceGet(User.UID)
             liveDataStationLocation.value = FS_StationLocation().locationGet(User.UID)
             liveDataImages.value = Storage().parkSpotPhotoGet(User.UID)
+            onComplete()
         }
     }
 
-    fun search(context:Context,searchQuery: String) {
+    fun search(context: Context, searchQuery: String) {
         // suspend function. it will block processes/UI thread ( you can run this function on another thread/coroutine)
-        val address = mapViewOSM.search(context,searchQuery)
+        val address = mapViewOSM.search(context, searchQuery)
         // when search method got the search result without empty body
         address?.let {
             val geoPoint = OSM_GeoPoint(it.latitude, it.longitude)
@@ -72,7 +73,7 @@ class SpotRegisterViewModel : ViewModel() {
         }
     }
 
-    fun getCurrentLocation(context:Context) {
+    fun getCurrentLocation(context: Context) {
         viewModelScope.launch {
             // suspend function. It will block the processes/UI thread
             val currentLocation = mapViewOSM.getLastKnowLocation(context)
@@ -84,35 +85,36 @@ class SpotRegisterViewModel : ViewModel() {
             }
         }
     }
-    fun setMarker(geoPoint:OSM_GeoPoint){
+
+    fun setMarker(geoPoint: OSM_GeoPoint) {
         mapViewOSM.setCenter(geoPoint)
         marker.position = geoPoint
     }
 
-    fun imagePicker(){
+    fun imagePicker() {
         photoPicker.showPhotoPicker()
     }
 
-    fun fillAddress(context:Context,editText: EditText,geoPoint:org.osmdroid.util.GeoPoint) {
-        val address = mapViewOSM.getAddress(context,geoPoint)
+    fun fillAddress(context: Context, editText: EditText, geoPoint: org.osmdroid.util.GeoPoint) {
+        val address = mapViewOSM.getAddress(context, geoPoint)
         address?.let {
             editText.setText(it.getAddressLine(0))
         }
     }
 
-    fun uploadDetails(context: Context, basic:DC_StationBasic, advance:DC_StationAdvance){
+    fun uploadDetails(context: Context, basic: DC_StationBasic, advance: DC_StationAdvance) {
         var result = true
-        viewModelScope.launch{
+        viewModelScope.launch {
             marker.position.apply {
                 result = FS_StationLocation().locationSet(
-                    DC_StationLocation(null, FS_GeoPoint(latitude,longitude)),
+                    DC_StationLocation(null, FS_GeoPoint(latitude, longitude)),
                     User.UID
                 ) and result
             }
 
-            result = FS_StationBasic().basicSet(basic,User.UID) and result
+            result = FS_StationBasic().basicSet(basic, User.UID) and result
 
-            result = FS_StationAdvance().advanceSet(advance,User.UID) and result
+            result = FS_StationAdvance().advanceSet(advance, User.UID) and result
 
             result = Storage().parkSpotPhotoPut(User.UID, imageViewsUri) and result
 

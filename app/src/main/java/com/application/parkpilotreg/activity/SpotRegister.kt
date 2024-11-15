@@ -43,7 +43,10 @@ class SpotRegister : AppCompatActivity(R.layout.spot_register) {
 
         val viewModel = ViewModelProvider(this)[SpotRegisterViewModel::class.java]
 
-        viewModel.loadActivity()
+        viewModel.loadActivity({
+            binding.shimmerLayout.shimmerLayout.visibility = View.GONE
+            binding.linearLayout.visibility = View.VISIBLE
+        })
 
         viewModel.init(this, bindingLocationPicker.mapView)
 
