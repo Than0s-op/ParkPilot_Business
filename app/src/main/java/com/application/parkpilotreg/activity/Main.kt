@@ -3,8 +3,12 @@ package com.application.parkpilotreg.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import com.application.parkpilotreg.module.firebase.database.UserBasic
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import com.application.parkpilotreg.User as appUser
 
 class Main : Activity() {
@@ -18,12 +22,17 @@ class Main : Activity() {
 
             // store UID in application layer
 //            appUser.UID = Firebase.auth.currentUser?.uid!!
-
-            // start the registration activity
-            startActivity(Intent(this@Main, Setting::class.java).apply {
-                // clear the activity stack
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            })
+            CoroutineScope(Dispatchers.IO).launch {
+                if (UserBasic().getProfile(appUser.UID) == null) {
+                    startActivityForResult(Intent(this@Main, UserRegister::class.java), 101)
+                } else {
+                    // start the registration activity
+                    startActivity(Intent(this@Main, Setting::class.java).apply {
+                        // clear the activity stack
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    })
+                }
+            }
         }
 
         // No user is signed in yet
@@ -31,6 +40,19 @@ class Main : Activity() {
             startActivity(Intent(this, Authentication::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             })
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 101) {
+            CoroutineScope(Dispatchers.IO).launch {
+                if (UserBasic().getProfile(appUser.UID) != null) {
+                    startActivity(Intent(this@Main, Setting::class.java).apply {
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    })
+                } else finish()
+            }
         }
     }
 }
