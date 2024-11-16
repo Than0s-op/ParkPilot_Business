@@ -16,17 +16,6 @@ class Storage {
     private val storageRef = Firebase.storage.reference
     suspend fun userProfilePhotoPut(uid: String, uri: Uri?): Uri? {
         val childRef = storageRef.child("user_profile_photo/${uid}")
-//        val request = ImageRequest.Builder(context)
-//            .data(photo)
-//            .size(600, 600)
-//            .build()
-//        val drawable = context.imageLoader.execute(request).drawable
-//
-//        // this next leve logic present on firebase doc
-//        val bitmap = (drawable as BitmapDrawable).bitmap
-//        val baos = ByteArrayOutputStream()
-//        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-//        val data = baos.toByteArray()
         if (uri == null) return null
         if (Utils.isLocalUri(uri)) {
             childRef.putFile(uri)
@@ -52,18 +41,6 @@ class Storage {
                 childRef.delete()
                 continue
             }
-
-//            val request = ImageRequest.Builder(context)
-//                .data(uri)
-//                .size(600, 600)
-//                .build()
-//            val drawable = context.imageLoader.execute(request).drawable
-//
-//            // this next leve logic present on firebase doc
-//            val bitmap = (drawable as BitmapDrawable).bitmap
-//            val baos = ByteArrayOutputStream()
-//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-//            val data = baos.toByteArray()
             if (Utils.isLocalUri(uri)) {
                 childRef.putFile(uri).addOnFailureListener {
                     result = false
@@ -92,7 +69,7 @@ class Storage {
                 childRef.delete()
                 continue
             }
-            if(Utils.isLocalUri(uri)) {
+            if (Utils.isLocalUri(uri)) {
                 childRef.putFile(uri).addOnFailureListener {
                     result = false
                 }.await()

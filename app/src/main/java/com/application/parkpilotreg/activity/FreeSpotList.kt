@@ -39,7 +39,7 @@ class FreeSpotList : AppCompatActivity() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 val filteredList = viewModel.freeSpotList.value?.filter {
-                    it.landMark.contains(newText ?: "")
+                    it.landMark.contains(newText ?: "",true)
                 } ?: emptyList()
                 loadFreeSpotList(filteredList)
                 return true
