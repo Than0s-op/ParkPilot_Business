@@ -11,6 +11,7 @@ import com.application.parkpilotreg.FreeSpot
 import com.application.parkpilotreg.module.OSM
 import com.application.parkpilotreg.module.PhotoPicker
 import com.application.parkpilotreg.module.firebase.database.FreeSpotStore
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
@@ -53,14 +54,18 @@ class AddFreeSpotViewModel : ViewModel() {
         }
     }
 
-    fun search(context: Context, searchQuery: String) {
-        // suspend function. it will block processes/UI thread ( you can run this function on another thread/coroutine)
-        val address = mapViewOSM.search(context, searchQuery)
-        // when search method got the search result without empty body
-        address?.let {
-            val geoPoint = GeoPoint(it.latitude, it.longitude)
-            mapViewOSM.setCenter(geoPoint)
-            marker.position = geoPoint
+    fun search(context: Context, searchQuery: String, onComplete: () -> Unit) {
+        viewModelScope.launch {
+            // suspend function. it will block processes/UI thread ( you can run this function on another thread/coroutine)
+            val address = mapViewOSM.search(context, searchQuery)
+            // when search method got the search result without empty body
+            address?.let {
+                val geoPoint = GeoPoint(it.latitude, it.longitude)
+                mapViewOSM.setCenter(geoPoint)
+                marker.position = geoPoint
+            }
+            delay(2000)
+            onComplete()
         }
     }
 

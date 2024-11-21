@@ -5,6 +5,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.get
 import androidx.lifecycle.ViewModelProvider
 import coil.load
@@ -103,15 +104,23 @@ class SpotRegister : AppCompatActivity(R.layout.spot_register) {
         }
 
         // when user will type in search bar and press search(action) button (present on keyboard)
-        bindingLocationPicker.searchView.editText.setOnEditorActionListener { _, _, _ ->
+        bindingLocationPicker.searchView.setOnQueryTextListener(object :
+            SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                bindingLocationPicker.progressBarSearch.visibility = View.VISIBLE
+                viewModel.search(
+                    this@SpotRegister,
+                    bindingLocationPicker.searchView.query.toString()
+                ) {
+                    bindingLocationPicker.progressBarSearch.visibility = View.GONE
+                }
+                return false
+            }
 
-            // hide the searchView(search suggestion box)
-            bindingLocationPicker.searchView.hide()
-
-            // creating co-routine scope to run search method
-            viewModel.search(this, bindingLocationPicker.searchView.text.toString())
-            false
-        }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return true
+            }
+        })
 
         // when current location button press
         bindingLocationPicker.buttonCurrentLocation.setOnClickListener {

@@ -16,6 +16,7 @@ import com.application.parkpilotreg.module.OSM
 import com.application.parkpilotreg.module.PhotoPicker
 import com.application.parkpilotreg.module.TimePicker
 import com.application.parkpilotreg.module.firebase.Storage
+import kotlinx.coroutines.delay
 import com.google.firebase.firestore.GeoPoint as FS_GeoPoint
 import com.application.parkpilotreg.module.firebase.database.StationAdvance as FS_StationAdvance
 import com.application.parkpilotreg.module.firebase.database.StationBasic as FS_StationBasic
@@ -62,14 +63,18 @@ class SpotRegisterViewModel : ViewModel() {
         }
     }
 
-    fun search(context: Context, searchQuery: String) {
-        // suspend function. it will block processes/UI thread ( you can run this function on another thread/coroutine)
-        val address = mapViewOSM.search(context, searchQuery)
-        // when search method got the search result without empty body
-        address?.let {
-            val geoPoint = OSM_GeoPoint(it.latitude, it.longitude)
-            mapViewOSM.setCenter(geoPoint)
-            marker.position = geoPoint
+    fun search(context: Context, searchQuery: String, onComplete: () -> Unit) {
+        viewModelScope.launch {
+            // suspend function. it will block processes/UI thread ( you can run this function on another thread/coroutine)
+            val address = mapViewOSM.search(context, searchQuery)
+            // when search method got the search result without empty body
+            address?.let {
+                val geoPoint = OSM_GeoPoint(it.latitude, it.longitude)
+                mapViewOSM.setCenter(geoPoint)
+                marker.position = geoPoint
+            }
+            delay(2000)
+            onComplete()
         }
     }
 
@@ -77,7 +82,6 @@ class SpotRegisterViewModel : ViewModel() {
         viewModelScope.launch {
             // suspend function. It will block the processes/UI thread
             val currentLocation = mapViewOSM.getLastKnowLocation(context)
-
             // when we got user current location
             currentLocation?.let {
                 // set the user's current location as center of map

@@ -5,6 +5,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import coil.load
 import com.application.parkpilotreg.FreeSpot
 import com.application.parkpilotreg.R
@@ -95,6 +96,7 @@ class AddFreeSpot : AppCompatActivity() {
                 Toast.makeText(this, "All image should picked", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
+
             showProgressBar()
             viewModel.set(
                 spot = FreeSpot(
@@ -160,15 +162,22 @@ class AddFreeSpot : AppCompatActivity() {
         }
 
         // when user will type in search bar and press search(action) button (present on keyboard)
-        bindingLocationPicker.searchView.editText.setOnEditorActionListener { _, _, _ ->
+        bindingLocationPicker.searchView.setOnQueryTextListener(object : OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                bindingLocationPicker.progressBarSearch.visibility = View.VISIBLE
+                viewModel.search(
+                    this@AddFreeSpot,
+                    bindingLocationPicker.searchView.query.toString()
+                ) {
+                    bindingLocationPicker.progressBarSearch.visibility = View.GONE
+                }
+                return false
+            }
 
-            // hide the searchView(search suggestion box)
-            bindingLocationPicker.searchView.hide()
-
-            // creating co-routine scope to run search method
-            viewModel.search(this, bindingLocationPicker.searchView.text.toString())
-            false
-        }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return true
+            }
+        })
 
         // when current location button press
         bindingLocationPicker.buttonCurrentLocation.setOnClickListener {
