@@ -1,213 +1,225 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".activity.Setting">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/black">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsingToolbarLayout"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-            <com.facebook.shimmer.ShimmerFrameLayout
-                android:id="@+id/shimmerLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                app:shimmer_auto_start="true">
-
-                <!-- Placeholder ImageView with shimmer effect -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="#E0E0E0" />
-
-            </com.facebook.shimmer.ShimmerFrameLayout>
-
-            <ImageView
-                android:id="@+id/imageViewProfilePicture"
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:background="@color/black"
-                android:scaleType="centerCrop"
-                android:src="@drawable/car_park"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/textViewUserName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|start"
-                android:layout_marginHorizontal="15dp"
-                android:layout_marginVertical="30dp"
-                android:shadowColor="#000000"
-                android:shadowDx="1.5"
-                android:shadowDy="1.3"
-                android:shadowRadius="1.6"
-                android:text="Anonymous"
-                android:textColor="@android:color/white"
-                android:textSize="30sp"
-                android:textStyle="bold"
-                android:visibility="gone" />
-
-            <androidx.appcompat.widget.Toolbar
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin" />
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            app:navigationIconTint="@color/white"
+            app:title="Settings"
+            app:titleTextColor="@color/white" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:divider="@drawable/empty_mid_divider"
-            android:orientation="vertical"
-            android:paddingHorizontal="10dp"
-            android:clipToPadding="true"
-            android:showDividers="middle|end|beginning">
+            android:orientation="vertical">
 
-            <com.google.android.material.card.MaterialCardView
-                style="?attr/materialCardViewElevatedStyle"
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                app:contentPadding="8dp">
+                android:layout_height="wrap_content">
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmerLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/help_icon"
-                    android:drawablePadding="30dp"
-                    android:padding="15dp"
-                    android:text="Help"
-                    android:textSize="20sp" />
+                    android:layout_gravity="center"
+                    app:shimmer_auto_start="true">
 
-            </com.google.android.material.card.MaterialCardView>
+                    <!-- Placeholder ImageView with shimmer effect -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:layout_marginBottom="16dp"
+                        android:background="#E0E0E0" />
 
-            <com.google.android.material.card.MaterialCardView
-                style="?attr/materialCardViewElevatedStyle"
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
+                <ImageView
+                    android:id="@+id/imageViewProfilePicture"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:background="@color/black"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/car_park"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/textViewUserName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|start"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginVertical="30dp"
+                    android:shadowColor="#000000"
+                    android:shadowDx="1.5"
+                    android:shadowDy="1.3"
+                    android:shadowRadius="1.6"
+                    android:text="Anonymous"
+                    android:textColor="@android:color/white"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/buttonEditProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_marginTop="-45dp"
+                android:layout_marginEnd="10dp"
+                android:visibility="visible"
+                app:icon="@drawable/edit"
+                app:layout_anchor="@id/appBarLayout"
+                app:layout_anchorGravity="bottom|end" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="true"
-                app:contentPadding="8dp">
+                android:orientation="vertical"
+                android:paddingHorizontal="10dp"
+                app:divider="@drawable/empty_mid_divider"
+                app:showDividers="middle|end|beginning">
 
-                <com.google.android.material.textview.MaterialTextView
+
+                <com.google.android.material.card.MaterialCardView
+                    style="?attr/materialCardViewElevatedStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/quiz_icon"
-                    android:drawablePadding="30dp"
-                    android:padding="15dp"
-                    android:text="FAQ"
-                    android:textSize="20sp" />
+                    android:clickable="true"
+                    app:contentPadding="8dp">
 
-            </com.google.android.material.card.MaterialCardView>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/help_icon"
+                        android:drawablePadding="30dp"
+                        android:padding="15dp"
+                        android:text="Help"
+                        android:textSize="20sp" />
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/textViewSpotDetails"
-                style="?attr/materialCardViewElevatedStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:visibility="gone"
-                app:contentPadding="8dp">
+                </com.google.android.material.card.MaterialCardView>
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.google.android.material.card.MaterialCardView
+                    style="?attr/materialCardViewElevatedStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/baseline_add_24"
-                    android:drawablePadding="30dp"
-                    android:padding="15dp"
-                    android:text="Add Spot"
-                    android:textSize="20sp" />
+                    android:clickable="true"
+                    app:contentPadding="8dp">
 
-            </com.google.android.material.card.MaterialCardView>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/quiz_icon"
+                        android:drawablePadding="30dp"
+                        android:padding="15dp"
+                        android:text="FAQ"
+                        android:textSize="20sp" />
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/textViewAddFreeSpot"
-                style="?attr/materialCardViewElevatedStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:visibility="gone"
-                app:contentPadding="8dp">
+                </com.google.android.material.card.MaterialCardView>
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/textViewSpotDetails"
+                    style="?attr/materialCardViewElevatedStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/baseline_add_24"
-                    android:drawablePadding="30dp"
-                    android:padding="15dp"
-                    android:text="Add Spot"
-                    android:textSize="20sp" />
+                    android:clickable="true"
+                    android:visibility="gone"
+                    app:contentPadding="8dp">
 
-            </com.google.android.material.card.MaterialCardView>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/baseline_add_24"
+                        android:drawablePadding="30dp"
+                        android:padding="15dp"
+                        android:text="Add Spot"
+                        android:textSize="20sp" />
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/textViewFreeSpotList"
-                style="?attr/materialCardViewElevatedStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:visibility="gone"
-                app:contentPadding="8dp">
+                </com.google.android.material.card.MaterialCardView>
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/textViewAddFreeSpot"
+                    style="?attr/materialCardViewElevatedStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/baseline_list_24"
-                    android:drawablePadding="30dp"
-                    android:padding="15dp"
-                    android:text="Spots List"
-                    android:textSize="20sp" />
+                    android:clickable="true"
+                    android:visibility="gone"
+                    app:contentPadding="8dp">
 
-            </com.google.android.material.card.MaterialCardView>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/baseline_add_24"
+                        android:drawablePadding="30dp"
+                        android:padding="15dp"
+                        android:text="Add Spot"
+                        android:textSize="20sp" />
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/textViewLogout"
-                style="?attr/materialCardViewElevatedStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                app:contentPadding="8dp">
+                </com.google.android.material.card.MaterialCardView>
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/textViewFreeSpotList"
+                    style="?attr/materialCardViewElevatedStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/logout_icon"
-                    android:drawablePadding="30dp"
-                    android:padding="15dp"
-                    android:text="Logout"
-                    android:textSize="20sp" />
-            </com.google.android.material.card.MaterialCardView>
+                    android:clickable="true"
+                    android:visibility="gone"
+                    app:contentPadding="8dp">
 
-        </LinearLayout>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/baseline_list_24"
+                        android:drawablePadding="30dp"
+                        android:padding="15dp"
+                        android:text="Spots List"
+                        android:textSize="20sp" />
 
-    </androidx.core.widget.NestedScrollView>
+                </com.google.android.material.card.MaterialCardView>
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/buttonEditProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:visibility="gone"
-        app:icon="@drawable/edit"
-        app:layout_anchor="@id/appBarLayout"
-        app:layout_anchorGravity="bottom|end" />
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/textViewLogout"
+                    style="?attr/materialCardViewElevatedStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    app:contentPadding="8dp">
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/logout_icon"
+                        android:drawablePadding="30dp"
+                        android:padding="15dp"
+                        android:text="Logout"
+                        android:textSize="20sp" />
+                </com.google.android.material.card.MaterialCardView>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </ScrollView>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>
