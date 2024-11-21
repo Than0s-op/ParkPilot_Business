@@ -17,8 +17,11 @@ class Storage {
     suspend fun userProfilePhotoPut(uid: String, uri: Uri?): Uri? {
         val childRef = storageRef.child("user_profile_photo/${uid}")
         if (uri == null) return null
-        if (Utils.isLocalUri(uri)) {
-            childRef.putFile(uri)
+        try {
+            if (Utils.isLocalUri(uri)) {
+                childRef.putFile(uri).await()
+            }
+        } catch (_: Exception) {
         }
         return userProfilePhotoGet(uid)
     }
@@ -35,65 +38,84 @@ class Storage {
         val path = "parkSpot/${uid}/"
         var result = true
 
-        for ((cnt, uri) in photosUri.withIndex()) {
-            val childRef = storageRef.child("$path${cnt}")
-            if (uri == null) {
-                childRef.delete()
-                continue
+        try {
+            for ((cnt, uri) in photosUri.withIndex()) {
+                val childRef = storageRef.child("$path${cnt}")
+                if (uri == null) {
+                    childRef.delete()
+                    continue
+                }
+                if (Utils.isLocalUri(uri)) {
+                    childRef.putFile(uri).addOnFailureListener {
+                        result = false
+                    }.await()
+                }
             }
-            if (Utils.isLocalUri(uri)) {
-                childRef.putFile(uri).addOnFailureListener {
-                    result = false
-                }.await()
-            }
+        } catch (_: Exception) {
+            result = false
         }
+
         return result
     }
 
     suspend fun parkSpotPhotoGet(uid: String): List<Uri> {
-        val list = storageRef.child("parkSpot/${uid}/").listAll().await()
         val imagesUri = ArrayList<Uri>()
-        for (item in list.items) {
-            imagesUri.add(item.downloadUrl.await())
+        try {
+            val list = storageRef.child("parkSpot/${uid}/").listAll().await()
+            for (item in list.items) {
+                imagesUri.add(item.downloadUrl.await())
+            }
+        } catch (_: Exception) {
         }
         return imagesUri
     }
 
     suspend fun setFreeSpotImages(uid: String, uriList: List<Uri?>): Boolean {
         var result = true
-        val path = "free_spot/${uid}/"
+        try {
+            val path = "free_spot/${uid}/"
 
-        for ((cnt, uri) in uriList.withIndex()) {
-            val childRef = storageRef.child("$path${cnt}")
-            if (uri == null) {
-                childRef.delete()
-                continue
+            for ((cnt, uri) in uriList.withIndex()) {
+                val childRef = storageRef.child("$path${cnt}")
+                if (uri == null) {
+                    childRef.delete()
+                    continue
+                }
+                if (Utils.isLocalUri(uri)) {
+                    childRef.putFile(uri).addOnFailureListener {
+                        result = false
+                    }.await()
+                }
             }
-            if (Utils.isLocalUri(uri)) {
-                childRef.putFile(uri).addOnFailureListener {
-                    result = false
-                }.await()
-            }
+        } catch (_: Exception) {
+            result = false
         }
         return result
     }
 
     suspend fun getFreeSpotImages(uid: String): List<Uri> {
-        val list = storageRef.child("free_spot/${uid}/").listAll().await()
         val imagesUri = ArrayList<Uri>()
-        for (item in list.items) {
-            imagesUri.add(item.downloadUrl.await())
+        try {
+            val list = storageRef.child("free_spot/${uid}/").listAll().await()
+            for (item in list.items) {
+                imagesUri.add(item.downloadUrl.await())
+            }
+        } catch (_: Exception) {
         }
         return imagesUri
     }
 
     suspend fun removeFreeSpotImages(uid: String): Boolean {
         var result = true
-        val list = storageRef.child("free_spot/${uid}/").listAll().await()
-        for (item in list.items) {
-            item.delete().addOnFailureListener {
-                result = false
+        try {
+            val list = storageRef.child("free_spot/${uid}/").listAll().await()
+            for (item in list.items) {
+                item.delete().addOnFailureListener {
+                    result = false
+                }
             }
+        } catch (_: Exception) {
+            result = false
         }
         return result
     }

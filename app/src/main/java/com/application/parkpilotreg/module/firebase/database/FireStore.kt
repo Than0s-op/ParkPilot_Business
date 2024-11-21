@@ -40,12 +40,17 @@ class UserBasic : FireStore() {
             userName to data.userName.trim()
         )
 
-        // await function this will block thread
-        fireStore.collection(collectionName).document(documentID).set(map, SetOptions.merge())
-            .addOnSuccessListener {
-                // call successfully perform
-                result = true
-            }.await()
+        try {
+            // await function this will block thread
+            fireStore
+                .collection(collectionName)
+                .document(documentID)
+                .set(map, SetOptions.merge())
+                .await()
+            result = true
+        } catch (_: Exception) {
+            result = false
+        }
 
         // return update status
         return result
@@ -54,22 +59,29 @@ class UserBasic : FireStore() {
     suspend fun getProfile(documentID: String): UserProfile? {
         var result: UserProfile? = null
         // await function this will block thread
-        fireStore.collection(collectionName).document(documentID).get().await().apply {
-            // is firstName present? if yes, it means data are present otherwise not
-            if (get(userName) != null) {
-                result = UserProfile(
-                    get(userName) as String
-                )
+        try {
+            fireStore.collection(collectionName).document(documentID).get().await().apply {
+                // is firstName present? if yes, it means data are present otherwise not
+                if (get(userName) != null) {
+                    result = UserProfile(
+                        get(userName) as String
+                    )
+                }
             }
+        } catch (_: Exception) {
         }
         return result
     }
 
     suspend fun isUnique(userName: String): Boolean {
-        val aggregateCount =
-            fireStore.collection(collectionName).whereEqualTo(this.userName, userName).count()
-                .get(AggregateSource.SERVER).await()
-        return aggregateCount.count == 0L
+        var aggregateCount = 1L
+        try {
+            aggregateCount =
+                fireStore.collection(collectionName).whereEqualTo(this.userName, userName).count()
+                    .get(AggregateSource.SERVER).await().count
+        } catch (_: Exception) {
+        }
+        return aggregateCount == 0L
     }
 }
 
@@ -94,12 +106,13 @@ class UserAdvance : FireStore() {
             gender to data.gender
         )
 
-        // await function this will block thread
-        fireStore.collection(collectionName).document(documentID).set(map, SetOptions.merge())
-            .addOnSuccessListener {
-                // call successfully perform
-                result = true
-            }.await()
+        try {
+            // await function this will block thread
+            fireStore.collection(collectionName).document(documentID).set(map, SetOptions.merge())
+                .await()
+            result = true
+        } catch (_: Exception) {
+        }
 
         // return result
         return result
@@ -108,17 +121,20 @@ class UserAdvance : FireStore() {
     // To get data from user collection with specific document
     suspend fun userGet(documentID: String): UserCollection? {
         var result: UserCollection? = null
-        // await function this will block thread
-        fireStore.collection(collectionName).document(documentID).get().await().apply {
-            // is firstName present? if yes, it means data are present otherwise not
-            if (get(firstName) != null) {
-                result = UserCollection(
-                    get(firstName) as String,
-                    get(lastName) as String,
-                    get(birthDate) as String,
-                    get(gender) as String
-                )
+        try {
+            // await function this will block thread
+            fireStore.collection(collectionName).document(documentID).get().await().apply {
+                // is firstName present? if yes, it means data are present otherwise not
+                if (get(firstName) != null) {
+                    result = UserCollection(
+                        get(firstName) as String,
+                        get(lastName) as String,
+                        get(birthDate) as String,
+                        get(gender) as String
+                    )
+                }
             }
+        } catch (_: Exception) {
         }
         return result
     }
@@ -131,22 +147,28 @@ class StationLocation : FireStore() {
         // creating arraylist of station data class
         val result = ArrayList<StationLocation>()
 
-        fireStore.collection(collectionName).get().await().let { collection ->
-            for (document in collection) {
-                result.add(StationLocation(document.id, document.data[coordinates] as GeoPoint))
+        try {
+            fireStore.collection(collectionName).get().await().let { collection ->
+                for (document in collection) {
+                    result.add(StationLocation(document.id, document.data[coordinates] as GeoPoint))
+                }
             }
+        } catch (_: Exception) {
         }
         return result
     }
 
     suspend fun locationGet(documentID: String): GeoPoint? {
         var result: GeoPoint? = null
-        // await function this will block thread
-        fireStore.collection(collectionName).document(documentID).get().await().apply {
-            // is coordinates present? if yes, it means data is present otherwise not
-            get(coordinates)?.let {
-                result = it as GeoPoint
+        try {
+            // await function this will block thread
+            fireStore.collection(collectionName).document(documentID).get().await().apply {
+                // is coordinates present? if yes, it means data is present otherwise not
+                get(coordinates)?.let {
+                    result = it as GeoPoint
+                }
             }
+        } catch (_: Exception) {
         }
         return result
     }
@@ -160,12 +182,14 @@ class StationLocation : FireStore() {
             coordinates to stationLocation.coordinates
         )
 
-        // await function this will block thread
-        fireStore.collection(collectionName).document(documentID).set(map, SetOptions.merge())
-            .addOnSuccessListener {
-                // call successfully perform
-                result = true
-            }.await()
+        try {
+            // await function this will block thread
+            fireStore.collection(collectionName).document(documentID).set(map, SetOptions.merge())
+                .await()
+            result = true
+        } catch (_: Exception) {
+            result = false
+        }
 
         // return result
         return result
@@ -179,14 +203,17 @@ class StationBasic : FireStore() {
     private val reserved = "reserved"
     suspend fun basicGet(documentID: String): StationBasic? {
         var result: StationBasic? = null
-        fireStore.collection(collectionName).document(documentID).get().await().apply {
-            if (get(name) != null) {
-                result = StationBasic(
-                    get(name) as String,
-                    (get(price) as Long).toInt(),
-                    (get(reserved) as Long).toInt()
-                )
+        try {
+            fireStore.collection(collectionName).document(documentID).get().await().apply {
+                if (get(name) != null) {
+                    result = StationBasic(
+                        get(name) as String,
+                        (get(price) as Long).toInt(),
+                        (get(reserved) as Long).toInt()
+                    )
+                }
             }
+        } catch (_: Exception) {
         }
         return result
     }
@@ -201,13 +228,14 @@ class StationBasic : FireStore() {
             price to stationBasic.price,
             reserved to stationBasic.reserved
         )
-
-        // await function this will block thread
-        fireStore.collection(collectionName).document(documentID).set(map, SetOptions.merge())
-            .addOnSuccessListener {
-                // call successfully perform
-                result = true
-            }.await()
+        try {
+            // await function this will block thread
+            fireStore.collection(collectionName).document(documentID).set(map, SetOptions.merge())
+                .await()
+            result = true
+        } catch (_: Exception) {
+            result = false
+        }
 
         // return result
         return result
@@ -226,18 +254,21 @@ class StationAdvance : FireStore() {
 
     suspend fun advanceGet(documentID: String): StationAdvance? {
         var result: StationAdvance? = null
-        fireStore.collection(collectionName).document(documentID).get().await().apply {
-            if (get(amenities) != null) {
-                result = StationAdvance(get(policies) as String,
-                    get(amenities) as ArrayList<String>,
-                    (get(accessHours) as Map<String, Any>).let {
-                        AccessHours(
-                            it[openTime] as String,
-                            it[closeTime] as String,
-                            it[available] as List<String>
-                        )
-                    })
+        try {
+            fireStore.collection(collectionName).document(documentID).get().await().apply {
+                if (get(amenities) != null) {
+                    result = StationAdvance(get(policies) as String,
+                        get(amenities) as ArrayList<String>,
+                        (get(accessHours) as Map<String, Any>).let {
+                            AccessHours(
+                                it[openTime] as String,
+                                it[closeTime] as String,
+                                it[available] as List<String>
+                            )
+                        })
+                }
             }
+        } catch (_: Exception) {
         }
         return result
     }
@@ -257,12 +288,15 @@ class StationAdvance : FireStore() {
             )
         )
 
-        // await function this will block thread
-        fireStore.collection(collectionName).document(documentID).set(map, SetOptions.merge())
-            .addOnSuccessListener {
-                // call successfully perform
-                result = true
-            }.await()
+        try {
+            // await function this will block thread
+            fireStore.collection(collectionName).document(documentID).set(map, SetOptions.merge())
+                .addOnSuccessListener {
+                    // call successfully perform
+                    result = true
+                }.await()
+        } catch (_: Exception) {
+        }
 
         // return result
         return result
@@ -273,61 +307,77 @@ class FreeSpotStore : FireStore() {
     private val storage by lazy { Storage() }
     suspend fun set(spot: FreeSpot): Boolean {
         var result = true
-        fireStore.collection(NAME).document(spot.id).set(
-            mapOf(
-                LAND_MARK to spot.landMark,
-                LOCATION to spot.location,
-                POLICIES to spot.policies,
-            )
-        ).addOnFailureListener {
+        try {
+            fireStore.collection(NAME).document(spot.id).set(
+                mapOf(
+                    LAND_MARK to spot.landMark,
+                    LOCATION to spot.location,
+                    POLICIES to spot.policies,
+                )
+            ).addOnFailureListener {
+                result = false
+            }.await()
+            result = storage.setFreeSpotImages(
+                uid = spot.id,
+                uriList = spot.images
+            ) and result
+        } catch (_: Exception) {
             result = false
-        }.await()
-        result = storage.setFreeSpotImages(
-            uid = spot.id,
-            uriList = spot.images
-        ) and result
+        }
         return result
     }
 
-    suspend fun get(documentId: String): FreeSpot {
-        val imageList = storage.getFreeSpotImages(documentId)
-        val document = fireStore.collection(NAME)
-            .document(documentId)
-            .get()
-            .await()
-            .data
-        return FreeSpot(
-            id = documentId,
-            landMark = document!![LAND_MARK].toString(),
-            location = document[LOCATION] as GeoPoint,
-            policies = document[POLICIES].toString(),
-            images = imageList
-        )
+    suspend fun get(documentId: String): FreeSpot? {
+        return try {
+            val imageList = storage.getFreeSpotImages(documentId)
+            val document = fireStore.collection(NAME)
+                .document(documentId)
+                .get()
+                .await()
+                .data
+            FreeSpot(
+                id = documentId,
+                landMark = document!![LAND_MARK].toString(),
+                location = document[LOCATION] as GeoPoint,
+                policies = document[POLICIES].toString(),
+                images = imageList
+            )
+        } catch (_: Exception) {
+            null
+        }
     }
 
     suspend fun remove(documentId: String): Boolean {
         var result = true
-        result = result and storage.removeFreeSpotImages(documentId)
 
-        fireStore.collection(NAME).document(documentId).delete().addOnFailureListener {
+        try {
+            result = result and storage.removeFreeSpotImages(documentId)
+            fireStore.collection(NAME).document(documentId).delete().addOnFailureListener {
+                result = false
+            }.await()
+        } catch (_: Exception) {
             result = false
-        }.await()
+        }
         return result
     }
 
     suspend fun getAllSpots(): List<FreeSpot> {
         val spotList = ArrayList<FreeSpot>()
-        val documents = fireStore.collection(NAME).get().await()
-        for (document in documents) {
-            spotList.add(
-                FreeSpot(
-                    id = document.id,
-                    landMark = document.data[LAND_MARK].toString(),
-                    location = document.data[LOCATION] as GeoPoint,
-                    policies = document.data[POLICIES].toString(),
-                    images = storage.getFreeSpotImages(document.id)
+        try {
+            val documents = fireStore.collection(NAME).get().await()
+            for (document in documents) {
+                spotList.add(
+                    FreeSpot(
+                        id = document.id,
+                        landMark = document.data[LAND_MARK].toString(),
+                        location = document.data[LOCATION] as GeoPoint,
+                        policies = document.data[POLICIES].toString(),
+                        images = storage.getFreeSpotImages(document.id)
+                    )
                 )
-            )
+            }
+        } catch (_: Exception) {
+
         }
         return spotList
     }

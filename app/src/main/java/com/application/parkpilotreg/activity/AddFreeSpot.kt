@@ -79,6 +79,22 @@ class AddFreeSpot : AppCompatActivity() {
         }
 
         binding.buttonAdd.setOnClickListener {
+            if (binding.editTextLandMark.text.toString().isBlank()) {
+                binding.editTextLandMark.error = "Field must not be blank"
+                return@setOnClickListener
+            }
+            if (binding.editTextAddress.text.toString().isBlank()) {
+                binding.editTextAddress.error = "Field must not be blank"
+                return@setOnClickListener
+            }
+            if (binding.editTextPolicies.text.toString().isBlank()) {
+                binding.editTextPolicies.error = "Field must not be blank"
+                return@setOnClickListener
+            }
+            if (viewModel.imageViewsUri.contains(null)) {
+                Toast.makeText(this, "All image should picked", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
             showProgressBar()
             viewModel.set(
                 spot = FreeSpot(
