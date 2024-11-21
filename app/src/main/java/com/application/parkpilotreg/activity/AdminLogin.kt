@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.application.parkpilotreg.User
 import com.application.parkpilotreg.Utils
 import com.application.parkpilotreg.databinding.AdminLoginPanelBinding
 import com.application.parkpilotreg.viewModel.AdminLoginViewModel
@@ -31,6 +30,15 @@ class AdminLogin : AppCompatActivity() {
         binding.divider1.dividerTextView.text = "Admin Login"
 
         binding.buttonLogin.setOnClickListener {
+            if (!isValidEmailId(binding.editTextEmail.text.toString())) {
+                binding.editTextEmail.error = "Invalid Email"
+                return@setOnClickListener
+            }
+            if (binding.editTextPassword.text.toString().length < 6) {
+                binding.editTextPassword.error = "Password must be at least 6 characters"
+                return@setOnClickListener
+            }
+
             showProgress()
             viewModel.signIn(
                 email = binding.editTextEmail.text.toString(),
@@ -51,6 +59,10 @@ class AdminLogin : AppCompatActivity() {
                 }
             )
         }
+    }
+
+    private fun isValidEmailId(toString: String): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(toString).matches()
     }
 
     private fun showProgress() {

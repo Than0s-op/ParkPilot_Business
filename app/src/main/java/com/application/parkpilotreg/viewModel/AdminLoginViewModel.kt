@@ -12,13 +12,18 @@ class AdminLoginViewModel : ViewModel() {
         onFailed: () -> Unit = {},
         onComplete: () -> Unit = {}
     ) {
-        Firebase.auth.signInWithEmailAndPassword(email, password)
-            .addOnSuccessListener {
-                onSuccess()
-            }.addOnFailureListener {
-                onFailed()
-            }.addOnCompleteListener {
-                onComplete()
-            }
+        try {
+            Firebase.auth.signInWithEmailAndPassword(email, password)
+                .addOnSuccessListener {
+                    onSuccess()
+                }.addOnFailureListener {
+                    onFailed()
+                }.addOnCompleteListener {
+                    onComplete()
+                }
+        } catch (_: Exception) {
+            onFailed()
+            onComplete()
+        }
     }
 }
