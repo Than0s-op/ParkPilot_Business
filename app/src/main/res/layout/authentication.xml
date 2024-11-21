@@ -6,6 +6,27 @@
     android:layout_height="match_parent"
     tools:context=".activity.Authentication">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:elevation="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            app:navigationIconTint="@color/white"
+            app:title="Authentication"
+            app:titleTextColor="@color/white" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
@@ -15,7 +36,7 @@
         app:layout_constraintBottom_toTopOf="@+id/materialCardView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/materialCardView2"
@@ -101,8 +122,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:visibility="gone"
                     android:indeterminate="true"
+                    android:visibility="gone"
                     app:indicatorColor="@color/black" />
 
                 <!--     line divider     -->
@@ -114,9 +135,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:showDividers="middle"
                     android:divider="@drawable/empty_mid_divider"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:showDividers="middle">
 
                     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                         android:id="@+id/buttonGoogleLogin"
@@ -209,8 +230,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:visibility="gone"
                     android:indeterminate="true"
+                    android:visibility="gone"
                     app:indicatorColor="@color/black" />
 
                 <LinearLayout

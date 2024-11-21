@@ -22,17 +22,12 @@ class Main : Activity() {
 
             // store UID in application layer
 //            appUser.UID = Firebase.auth.currentUser?.uid!!
-            CoroutineScope(Dispatchers.IO).launch {
-                if (UserBasic().getProfile(appUser.UID) == null) {
-                    startActivityForResult(Intent(this@Main, UserRegister::class.java), 101)
-                } else {
-                    // start the registration activity
-                    startActivity(Intent(this@Main, Setting::class.java).apply {
-                        // clear the activity stack
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    })
-                }
-            }
+
+            // start the registration activity
+            startActivity(Intent(this@Main, Setting::class.java).apply {
+                // clear the activity stack
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            })
         }
 
         // No user is signed in yet
