@@ -19,6 +19,10 @@ android {
     }
 
     buildTypes {
+//        debug {
+//            applicationIdSuffix = ".debug"  // This makes the debug build unique
+//            versionNameSuffix = "-debug"
+//        }
         release {
             isMinifyEnabled = false
             proguardFiles(

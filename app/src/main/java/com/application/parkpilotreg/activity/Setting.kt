@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.application.parkpilotreg.User
 import com.application.parkpilotreg.databinding.SettingBinding
 import com.application.parkpilotreg.viewModel.ProfileViewModel
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 
 class Setting : AppCompatActivity() {
 
@@ -52,6 +54,7 @@ class Setting : AppCompatActivity() {
             true -> {
                 binding.textViewAddFreeSpot.visibility = View.VISIBLE
                 binding.textViewFreeSpotList.visibility = View.VISIBLE
+                binding.buttonEditProfile.visibility = View.GONE
                 binding.textViewUserName.text = "Admin"
             }
 
