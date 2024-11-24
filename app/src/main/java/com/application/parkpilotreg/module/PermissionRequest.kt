@@ -21,14 +21,29 @@ import kotlinx.coroutines.launch
 class PermissionRequest {
 
     fun hasLocationPermission(context: Context): Boolean {
-        val read = ContextCompat.checkSelfPermission(
-            context,
-            Manifest.permission.ACCESS_COARSE_LOCATION
-        )
-        return read == PackageManager.PERMISSION_GRANTED
+        return if (ActivityCompat.checkSelfPermission(
+                context,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                context,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                context as Activity,
+                arrayOf(
+                    android.Manifest.permission.ACCESS_FINE_LOCATION,
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION
+                ),
+                101
+            )
+            false
+        } else {
+            true
+        }
     }
 
-    fun locationPermissionRequest(context:Context): Boolean {
+    fun locationPermissionRequest(context: Context): Boolean {
         if (hasLocationPermission(context)) return true
         ActivityCompat.requestPermissions(
             context as Activity,
@@ -41,7 +56,7 @@ class PermissionRequest {
     }
 
     @OptIn(DelicateCoroutinesApi::class)
-    fun gpsPermissionRequest(context:Context) {
+    fun gpsPermissionRequest(context: Context) {
         if (locationPermissionRequest(context)) {
             val interval: Long = 1000 * 60 * 1
             val fastestInterval: Long = 1000 * 50
