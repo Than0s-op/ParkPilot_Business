@@ -2,6 +2,7 @@ package com.application.parkpilotreg.activity
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -23,10 +24,16 @@ import com.application.parkpilotreg.StationAdvance as StationAdvance_DS
 
 class SpotRegister : AppCompatActivity(R.layout.spot_register) {
     private lateinit var binding: SpotRegisterBinding
+    private lateinit var viewModel: SpotRegisterViewModel
+    private lateinit var bindingLocationPicker: LocationPickerBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = SpotRegisterBinding.inflate(layoutInflater)
+        binding = SpotRegisterBinding.inflate(layoutInflater, null, false)
+        bindingLocationPicker = LocationPickerBinding.inflate(layoutInflater, null, false)
+        viewModel = ViewModelProvider(this)[SpotRegisterViewModel::class.java]
+
         setContentView(binding.root)
 
         val imageViews = arrayOf(
@@ -35,28 +42,19 @@ class SpotRegister : AppCompatActivity(R.layout.spot_register) {
             binding.imageView3
         )
 
-        val bindingLocationPicker = LocationPickerBinding.inflate(layoutInflater)
-
-        val dialogBox =
-            MaterialAlertDialogBuilder(this).setView(bindingLocationPicker.root).create()
 
         var openFlag = false
 
-        val viewModel = ViewModelProvider(this)[SpotRegisterViewModel::class.java]
 
-        viewModel.loadActivity({
+        viewModel.loadActivity {
             binding.shimmerLayout.shimmerLayout.visibility = View.GONE
             binding.linearLayout.visibility = View.VISIBLE
-        })
+        }
 
         viewModel.init(this, bindingLocationPicker.mapView)
 
         binding.buttonLocationPick.setOnClickListener {
-            dialogBox.show()
-        }
-
-        dialogBox.setOnDismissListener {
-            viewModel.fillAddress(this, binding.editTextAddress, viewModel.marker.position)
+            showLocationPickerDialog()
         }
 
         binding.linearLayoutTimeShower.editTextOpenTime.setOnClickListener {
@@ -362,5 +360,22 @@ class SpotRegister : AppCompatActivity(R.layout.spot_register) {
                     true
             }
         }
+    }
+
+    private fun showLocationPickerDialog() {
+        val input = bindingLocationPicker.root
+
+        if (input.parent != null) (input.parent as ViewGroup).removeView(input)
+        MaterialAlertDialogBuilder(this)
+            .setView(input)
+            .setCancelable(false)
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setPositiveButton("Ok") { dialog, _ ->
+                viewModel.fillAddress(this, binding.editTextAddress, viewModel.marker.position)
+                dialog.dismiss()
+            }
+            .show()
     }
 }
