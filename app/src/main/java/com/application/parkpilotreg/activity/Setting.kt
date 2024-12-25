@@ -56,6 +56,7 @@ class Setting : AppCompatActivity() {
                 binding.textViewFreeSpotList.visibility = View.VISIBLE
                 binding.buttonEditProfile.visibility = View.GONE
                 binding.textViewUserName.text = "Admin"
+                binding.topAppBar.title = "Admin"
             }
 
             false -> {
